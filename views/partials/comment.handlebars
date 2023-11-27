@@ -1,0 +1,24 @@
+<section id="comments-section" class="bg-light">
+    {{#each plainElements as |comment|}}
+        <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-comment-id="{{{comment.id}}}">
+            <section class="bg-secondary d-flex justify-content-between align-items-center">
+                <h2>{{{comment.title}}}</h2>
+                <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
+                {{#if (equals user.id loggedInUserId)}}
+                    <button id="edit-delete-comment-button-{{{count @index}}}" class="bg-secondary">Edit or Delete!</button>
+                {{/if}}
+            </section>
+            <p class="ml-3">{{{comment.content}}}</p>
+        </section>
+    {{/each}}
+
+    <section class="d-flex align-items-center justify-content-around">
+        {{#if (doubleEquals loggedIn "true" newCommentButton "true")}}
+            <button id="new-comment-button" class="bg-secondary">+ New Comment</button>
+        {{/if}}
+        {{#if (equals loggedIn "false")}}
+            <p> You must <a href="/login">log in</a> before adding a comment!!</p>
+        {{/if}}
+    </section>
+</section>
+<script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js"></script>

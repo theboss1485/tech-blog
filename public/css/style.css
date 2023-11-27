@@ -1,3 +1,9 @@
 .height-100{
     height: 100vh
 }
+
+#log-in-or-sign-up-instead:hover{
+
+    cursor:pointer;
+    color: darkred;
+}

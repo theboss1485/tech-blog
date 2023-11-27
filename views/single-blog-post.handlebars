@@ -1,0 +1,14 @@
+<section id="single-post" class="bg-light">
+    <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
+        <section class="bg-secondary d-flex justify-content-between align-items-center">
+            <h2>{{{blogPostTitle}}}</h2>
+            <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
+        </section>
+            <p class="ml-3">{{{blogPostContent}}}</p>
+    </section>
+</section>
+{{> comment}}
+{{#if (equals displayCudForm "true")}}
+    {{> create-update-delete}}
+{{/if}}
+

@@ -10,14 +10,14 @@ BlogPost.init(
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false,
+            allowNull: false
         },
         title: {
 
             type: DataTypes.STRING,
             allowNull: false
         },
-        contents: {
+        content: {
 
             type: DataTypes.STRING,
             allowNull: false
@@ -28,7 +28,7 @@ BlogPost.init(
             allowNull: false,
             references: {
 
-                model: 'user',
+                model: 'User',
                 key: 'id'
             }
         }
@@ -39,7 +39,7 @@ BlogPost.init(
         timestamps: {
 
             createdAt: true,
-            updatedAt: false
+            updatedAt: false,
         },
         freezeTableName: false,
         underscored: true,

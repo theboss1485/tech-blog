@@ -1,7 +1,39 @@
 const router = require('express').Router();
 const {User, BlogPost} = require('../../models');
+const renderPlainElements = require('../../utils/render-plain-elements.js');
 
 
+router.get('/:id', async (req, res) => {
+
+    console.log("This is now a test!!!!!!!!!!!");
+
+    // console.log(req.params.username);
+
+    // let userData = User.findOne({
+        
+
+    //     where: {
+
+    //         username: req.params.username
+    //     }
+    // })
+
+    // let userInQuestion = userData.get({plain: true});
+
+    // console.log("User", userInQuestion);
+
+    let userBlogPostData = await BlogPost.findAll({
+
+        where: {
+
+            user_id: req.params.id
+        }
+    })
+
+    console.log(userBlogPostData);
+
+    //renderPlainElements(userBlogPostData, "blog-post", req, res, "Your Dashboard", loggedIn, "dashboard");
+});
 
 router.post('/', (req, res) => {
 
@@ -9,7 +41,7 @@ router.post('/', (req, res) => {
 
         title: req.body.title,
         contents: req.body.contents,
-        user_id: req.body.user_id
+        user_id: req.session.user_id
     
     }).then((blogPost) => {
 
@@ -22,7 +54,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.update('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
 
     BlogPost.update(
         

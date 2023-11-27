@@ -1,0 +1,26 @@
+[
+    {
+        "content" : "This is an informative post!!",
+        "user_id" : 1,
+        "blog_post_id" : 2
+        
+    },
+    {
+        "content" : "I don't like this post...",
+        "user_id" : 2,
+        "blog_post_id" : 1
+        
+    },
+    {
+        "content" : "I enjoyed your post!!",
+        "user_id" : 4,
+        "blog_post_id" : 3
+        
+    },
+    {
+        "content" : "I liked the post you made!!",
+        "user_id" : 3,
+        "blog_post_id" : 4
+        
+    }
+]

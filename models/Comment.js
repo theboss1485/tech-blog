@@ -12,7 +12,7 @@ Comment.init(
             autoIncrement: true,
             allowNull: false,
         },
-        contents: {
+        content: {
 
             type: DataTypes.STRING,
             allowNull: false
@@ -33,7 +33,7 @@ Comment.init(
             allowNull: false,
             references: {
 
-                model: 'blogpost',
+                model: 'blog_posts',
                 key: 'id'
             }
         }
@@ -48,7 +48,7 @@ Comment.init(
         },
         freezeTableName: false,
         underscored: true,
-        modelName: 'BlogPost',
+        modelName: 'Comment',
     }
 );
 

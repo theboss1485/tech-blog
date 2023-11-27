@@ -1,0 +1,22 @@
+[
+    {
+        "title": "Why I Like Using the MVC Paradigm",
+        "content" : "I like using MVC because it makes the code cleaner and easier to understand.",
+        "user_id" : 1
+    },
+    {
+        "title": "Why I hate Duplicated Code in Programming",
+        "content" : "I hate it when people duplicate code in computer programs because the duplicate code clutters the program and causes the developers to waste time trying to understand it.",
+        "user_id" : 2
+    },
+    {
+        "title": "Why I Like Adding Comments to Computer Code",
+        "content" : "I like adding comments to code because I find it fun to explain to other people how my programs work.",
+        "user_id" : 3
+    },
+    {
+        "title": "Why I Don't Enjoy Writing HTML and CSS as Much as JavaScript",
+        "content" : "JavaScript allows me to think more logically, while writing HTML and CSS requires more creativity",
+        "user_id" : 4
+    }
+]

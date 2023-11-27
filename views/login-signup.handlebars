@@ -1,0 +1,22 @@
+<section id="login-signup-section bg-light">
+    <section id="post-1" class="col-10 m-3 px-0 border">
+        <section class="bg-secondary">
+            <h2>{{{subtitle}}}</h2>
+        </section>
+        <label for="username" class="d-block  ml-2">Username:</label>
+        <input type="text" id="username" class="col-9 d-block ml-2">
+        <label for="password"class="d-block mt-2 ml-2">Password:</label>
+        <input type="text" id="password" class="col-9 d-block  ml-2">
+        <button id="log-in-sign-up-button" class="col-9 ml-2 mt-2">{{{logInOrSignUp}}}</button>
+        {{#if ( equals logInOrSignUp "Log In!")}}
+            <a href="/signup" id="log-in-or-sign-up-instead"class="d-block ml-2 mt-2">{{{logInOrSignUpInstead}}}</a>
+        {{/if}}
+
+        {{#if ( equals logInOrSignUp "Sign Up!")}}
+            <a href="/login" id="log-in-or-sign-up-instead" class="d-block ml-2 mt-2">{{{logInOrSignUpInstead}}}</a>
+        {{/if}}
+
+        <p id="error-message" class="text-center text-danger">{{{errorMessage}}}</p>
+    </section>
+</section>
+<script src="/javascript/login-signup-js.js"></script>

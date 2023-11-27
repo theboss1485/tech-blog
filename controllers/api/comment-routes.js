@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.update('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
 
     Comment.update(
         
