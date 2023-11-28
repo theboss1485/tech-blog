@@ -7,7 +7,7 @@ const {Comment, User, BlogPost} = require('../../models');
 
 //     }).catch((error) => {
 
-//         console.log(error);
+// 
 //         res.status(400).json(error);
 //     });
 // })
@@ -18,8 +18,7 @@ router.post('/', (req, res) => {
 
     Comment.create({
 
-        title: req.body.title,
-        contents: req.body.contents,
+        content: req.body.content,
         user_id: req.body.user_id,
         blog_post_id: req.body.blog_post_id
     
@@ -39,7 +38,7 @@ router.put('/:id', (req, res) => {
     Comment.update(
         
         {
-            contents: req.body.contents
+            content: req.body.content
         },
         {
             where: {

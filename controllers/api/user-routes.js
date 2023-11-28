@@ -27,8 +27,6 @@ router.post('/', async (req, res) =>{
                 username: req.body.username
             }
         });
-
-        console.log("test 1");
         if(!duplicateUser){
 
             let validUser = await User.create({
@@ -43,16 +41,12 @@ router.post('/', async (req, res) =>{
             req.session.logged_in = true;
 
            await sessionSaveWithPromise(req);
-
-           console.log("req.session.user_id", req.session.user_id,);
-           console.log("req.session.logged_in", req.session.logged_in);
     
             //res.render("blog-post", {title: "Your Dashboard"});
             res.redirect(301, `../../dashboard`);
         
         } else {
 
-            console.log("test 2");
            // res.render('login-signup', {errorMessage: "This username is already taken.  Please try again!"});
             res.redirect(301, `/signup?taken=true`);
         } 
@@ -70,19 +64,14 @@ router.get('/logout', async (req, res) => {
 
     res.set('Cache-Control', 'no-store');
 
-    console.log("this is a test.")
-
     if(req.session.logged_in === true){
 
         req.session.destroy(() => {
-            console.log("destroyed!!");
+
             res.redirect(301, '../../login');
         })
 
         //await sessionDestroyWithPromise(req);
-        // console.log("destroyed!!")
-        
-        // console.log("destroyed 2222")
     
     }
 
@@ -107,9 +96,9 @@ router.post('/login', async (req, res) =>{
             }
         });
 
-        console.log("Username", req.body.username);
+        
 
-        console.log("User Data", userData);
+        
 
         let validUser = undefined;
 
@@ -118,7 +107,7 @@ router.post('/login', async (req, res) =>{
             validUser = await userData.get({plain: true});
         }
 
-        console.log("Valid User", validUser);
+        
 
         if(validUser !== undefined){
             
@@ -126,7 +115,6 @@ router.post('/login', async (req, res) =>{
             //     req.session.user_id = validUser.id
             //     req.session.logged_in = true;
             //     req.session.username = validUser.username;
-            //     console.log("Session Obj: ", req.session);
             //     res.redirect(301, `../../dashboard`);
             // })
 

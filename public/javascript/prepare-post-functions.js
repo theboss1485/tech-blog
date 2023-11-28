@@ -17,7 +17,7 @@ if(whichPage === "home"){
             
             // window.location.href =`/comments?post=${event.currentTarget.dataset.databasePostId}`;
 
-            document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}`;
+            document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}&cudComment=false`;
         });
     }
 

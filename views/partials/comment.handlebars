@@ -4,8 +4,8 @@
             <section class="bg-secondary d-flex justify-content-between align-items-center">
                 <h2>{{{comment.title}}}</h2>
                 <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
-                {{#if (equals user.id loggedInUserId)}}
-                    <button id="edit-delete-comment-button-{{{count @index}}}" class="bg-secondary">Edit or Delete!</button>
+                {{#if (equals user_id ../loggedInUserId)}}
+                    <button id="edit-delete-comment-button-{{{count @index}}}" class="bg-secondary"data-content={{{comment.id}}}>Edit or Delete!</button>
                 {{/if}}
             </section>
             <p class="ml-3">{{{comment.content}}}</p>
@@ -21,4 +21,4 @@
         {{/if}}
     </section>
 </section>
-<script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js"></script>
+<script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" defer></script>

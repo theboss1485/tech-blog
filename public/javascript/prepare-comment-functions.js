@@ -10,38 +10,34 @@ editButtons.forEach(button => {
 
         openCommentEditor("false", event);
     });
-})
+});
 
 let createCommentButton = document.getElementById("new-comment-button");
 
+if(createCommentButton !== null){
+
     createCommentButton.addEventListener("click", (event) => {
 
-        openCommentEditor("true", event);
+        openCommentEditor("true");
     });
-
-async function openCommentEditor(newComment){
-
-    blogPost
-
-    document.location.href =`/single-blog-post/id=${${event.currentTarget.dataset.databasePostId}}`;
-
-    // if(newComment === "true"){
-
-    //     await fetch('/api/blogPosts/cud-comment');
-
-    //     document.location.href ='/cud-post';
-
-    // } else if(newPost === "false"){
-
-    //     await fetch(`/cud-post/${event.currentTarget.dataset.databasePostId}`);
-
-    //     //await fetch(`/api/blogPosts/${event.currentTarget.dataset.databasePostId}`);
+}
 
 
-    //     document.location.href =`/cud-post/${event.currentTarget.dataset.databasePostId}`;
-    // }
 
-    await fetch(`/cud-post?newComment=${newComment}`);
+async function openCommentEditor(newComment, event){
 
-    document.location.href =`/cud-comment?newComment=${newComment}`;
+    let blogPost = document.getElementById("single-blog-post");
+
+    if(newComment === "true"){
+
+        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newComment=${newComment}`;
+    
+    } else if (newComment === "false"){
+
+
+
+        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newComment=${newComment}&editCommentId=${event.target.dataset.content}`;
+    }
+
+    
 }

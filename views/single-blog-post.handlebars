@@ -1,5 +1,5 @@
-<section id="single-post" class="bg-light">
-    <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
+<section id="single-post-container" class="bg-light">
+    <section id="single-blog-post" class="col-10 m-3 px-0 border" data-database-post-id="{{{postId}}}" data-user-id="{{{userId}}}">
         <section class="bg-secondary d-flex justify-content-between align-items-center">
             <h2>{{{blogPostTitle}}}</h2>
             <p class="my-0 mr-2">Created by {{{blogPostUser}}} on {{{blogPostCreatedDate}}}</p>
@@ -8,6 +8,11 @@
     </section>
 </section>
 {{> comment}}
+<section class="d-flex align-items-center justify-content-around">
+    {{#if ( doubleEquals loggedIn "true" displayCudForm "false")}}
+        <button id="new-comment-button" class="bg-secondary">Make a Comment!</button>
+    {{/if}}
+</section>
 {{#if (equals displayCudForm "true")}}
     {{> create-update-delete}}
 {{/if}}

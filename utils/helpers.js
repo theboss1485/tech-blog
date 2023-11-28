@@ -8,6 +8,9 @@ module.exports = {
 
         if(argumentOne === argumentTwo){
 
+            console.log("argumentOne", argumentOne);
+            console.log("argumentTwo", argumentTwo);
+
             return true;
         
         } else {

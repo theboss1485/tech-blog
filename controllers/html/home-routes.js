@@ -26,8 +26,6 @@ router.get('/', (req, res) => {
 
     BlogPost.findAll({include: User}).then((blogPostData) => {
 
-        console.log(blogPostData);
-
         renderPlainElements(blogPostData, "blog-post", req, res, "Tech Blog", renderLoggedInVariable(req), "home");
 
         res.status(200).json;
@@ -43,9 +41,6 @@ router.get('/login', (req, res) => {
 
     res.set('Cache-Control', 'no-store');
 
-    console.log("Login ROUTE ENTERED");
-    console.log("req.session.logged_in", req.session.logged_in);
-
     let loginOrLogoutText = undefined;
 
     if(req.session.logged_in === false || req.session.logged_in === undefined){
@@ -56,8 +51,6 @@ router.get('/login', (req, res) => {
 
         loginOrLogoutText = "Logout"
     }
-
-    console.log("Login or Logout", loginOrLogoutText);
     try{
 
         let invalidCredentials = "";
@@ -126,8 +119,6 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
 
     let blogPost = blogPostData.get({plain: true});
 
-    console.log(blogPost)
-
     let commentData = await Comment.findAll({
 
         include: [
@@ -147,9 +138,16 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
         }
     });
 
-    console.log(commentData);
+    let editCommentId = "";
 
-    renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A", blogPost.title, blogPost.content);
+    if(req.query.editCommentId !== null && req.query.editCommentId !== undefined){
+
+        editCommentId = req.query.editCommentId
+    }
+
+    renderPlainElements(commentData, "comment", req, res, "Tech Blog", 
+                        renderLoggedInVariable(req), "N/A", editCommentId, req.query.cudComment, req.query.newComment,
+                         blogPost.user.id, blogPost.id, blogPost.title, blogPost.content, blogPost.user.username, blogPost.createdAt);
 });
 
 router.get('/cud-post', async (req, res) => {
@@ -210,10 +208,6 @@ router.get('/cud-post/:id', async (req, res) =>{
 // });
 
 router.get('/dashboard', async (req, res) => {
-
-    console.log("Incoming Session Obj: ", req.session);
-    console.log("req.session.user_id", req.session.user_id);
-    console.log("req.session.logged_in", req.session.logged_in);
 
     if(req.session.logged_in === false ||req.session.logged_in === undefined ){
 

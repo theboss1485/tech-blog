@@ -1,7 +1,7 @@
 <section id="create-update-delete-post" class="bg-light">
     <section class="col-10 m-3 px-0 border">
         <section class="bg-secondary d-flex justify-content-between align-items-center">
-            <h2>{{{postPageTitle}}}</h2>
+            <h2>{{{cudFormTitle}}}</h2>
         </section>
         <section>
             {{#if (equals type "blog post")}}
@@ -9,13 +9,13 @@
                 <input type="text" id="post-title" class="col-9 d-block ml-2" value="{{{blogPostTitle}}}">
             {{/if}}
             <label for="content"class="d-block mt-2 ml-2">Content:</label>
-            <input type="text" id="post-content" class="col-9 d-block ml-2" value="{{{content}}}">
+            <input type="text" id="content" class="col-9 d-block ml-2" value="{{{elementInQuestion}}}">
             {{#if (equals new "true")}}
                 <button id="create-button" data-type="{{{type}}}" class="col-9 ml-2 mt-2">Create New {{{type}}}</button>
             {{/if}}
             {{#if (equals new "false")}}
-                <button id="update-button" data-type="{{{type}}}" class="col-9 ml-2 mt-2">Update {{{type}}}</button>
-                <button id="delete-button" data-type="{{{type}}}" class="col-9 ml-2 mt-2">Delete {{{type}}}</button>
+                <button id="update-button" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Update {{{type}}}</button>
+                <button id="delete-button" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Delete {{{type}}}</button>
             {{/if}} 
         </section>
     </section>

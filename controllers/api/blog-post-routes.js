@@ -5,10 +5,6 @@ const renderPlainElements = require('../../utils/render-plain-elements.js');
 
 router.get('/:id', async (req, res) => {
 
-    console.log("This is now a test!!!!!!!!!!!");
-
-    // console.log(req.params.username);
-
     // let userData = User.findOne({
         
 
@@ -20,7 +16,6 @@ router.get('/:id', async (req, res) => {
 
     // let userInQuestion = userData.get({plain: true});
 
-    // console.log("User", userInQuestion);
 
     let userBlogPostData = await BlogPost.findAll({
 
@@ -30,7 +25,6 @@ router.get('/:id', async (req, res) => {
         }
     })
 
-    console.log(userBlogPostData);
 
     //renderPlainElements(userBlogPostData, "blog-post", req, res, "Your Dashboard", loggedIn, "dashboard");
 });

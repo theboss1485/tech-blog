@@ -49,7 +49,7 @@ async function logIn(event){
     let password = document.getElementById("password").value;
 
     let credentials = {username: username, password: password}
-    console.log("Credentials", credentials);
+
     try {
 
         let response = await fetch("/api/users/login", {

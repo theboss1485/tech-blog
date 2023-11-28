@@ -8,7 +8,10 @@ let deleteButton = document.getElementById("delete-button");
 let postTitle = document.getElementById("post-title");
 let content = document.getElementById("content");
 
-if(createButton !== undefined){
+let singleBlogPost = document.getElementById("single-blog-post");
+let welcomeLine = document.getElementById("welcome-line");
+
+if(createButton !== null){
 
     createButton.addEventListener("click", () => {
 
@@ -23,32 +26,32 @@ if(createButton !== undefined){
     });
 }
 
-if(updateButton !== undefined){
+if(updateButton !== null){
 
-    updateButton.addEventListener("click", () => {
+    updateButton.addEventListener("click", (event) => {
 
         if(updateButton.dataset.type === "blog post"){
 
-            updateElement("blog post");
+            updateElement(event, "blog post");
 
-        } else if (createButton.dataset.type === "comment"){
+        } else if (updateButton.dataset.type === "comment"){
 
-            updateElement("comment");
+            updateElement(event, "comment");
         }
     });
 }
 
-if(deleteButton !== undefined){
+if(deleteButton !== null){
 
-    deleteButton.addEventListener("click", () => {
+    deleteButton.addEventListener("click", (event) => {
 
         if(deleteButton.dataset.type === "blog post"){
 
-            deleteElement("blog post");
+            deleteElement(event, "blog post");
 
         } else if (deleteButton.dataset.type === "comment"){
 
-            deleteElement("comment");
+            deleteElement(event, "comment");
         }
     });
 }
@@ -69,6 +72,8 @@ async function createElement(elementType){
             body: requestBody
     
         });
+
+        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
     
     } catch(error){
 
@@ -81,17 +86,19 @@ async function updateElement(event, elementType){
     let requestUrl = generateUrlPiece(elementType);
     let requestBody = generateBody(elementType);
 
-    let postId = event.target.dataset.post-id;
+    let id = event.target.dataset.editElementId;
     
     try {
 
-        await fetch(`${requestUrl}${postId}`, {
+        await fetch(`${requestUrl}${id}`, {
 
-            method: "UPDATE",
+            method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: requestBody
     
         });
+
+        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
     
     } catch(error){
 
@@ -103,15 +110,17 @@ async function deleteElement(event, elementType){
 
     let requestUrl = generateUrlPiece(elementType);
 
-    let postId = event.target.dataset.post-id;
+    let id = event.target.dataset.editElementId;
     
     try {
 
-        await fetch(`${requestUrl}${postId}`)({
+        await fetch(`${requestUrl}${id}`, {
 
             method: "DELETE",
             headers: {"Content-Type": "application/json"},
         });
+
+        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
     
     } catch(error){
 
@@ -131,17 +140,22 @@ function generateUrlPiece(elementType){
     }
 }
 
-function generateBody(){
+function generateBody(elementType){
 
     let body = undefined;
 
     if(elementType === "blog post"){
 
-        body =  JSON.stringify({ title: postTitle.textContent, content: content.textContent});
+        let loggedInUserId = welcomeLine.dataset.loggedInUserId;
+
+        body =  JSON.stringify({ title: postTitle.value, content: content.value, user_id: loggedInUserId});
     
     } else if(elementType === "comment"){
 
-        body =  JSON.stringify({content: content.textContent});
+        let blogPostId = singleBlogPost.dataset.databasePostId;
+        let blogPostUserId = singleBlogPost.dataset.userId;
+
+        body =  JSON.stringify({content: content.value, user_id: blogPostUserId, blog_post_id: blogPostId});
     }
 
     return body;
