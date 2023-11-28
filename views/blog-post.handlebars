@@ -20,29 +20,35 @@
 <script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" data-which-page="{{{loggedIn}}}" defer></script> --}}
 
 <section id="posts-section" class="bg-light">
-    {{#each plainElements as |post|}}
-        <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
-            <section class="bg-secondary d-flex justify-content-between align-items-center">
-                <h2>{{{title}}}</h2>
+    {{#if ( equals displayCudForm "true")}}
+            {{> create-update-delete}}
+    {{else}}
+        {{#each plainElements as |post|}}
+            <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
+                <section class="bg-secondary d-flex justify-content-between align-items-center">
+                    <h2>{{{title}}}</h2>
+                    {{#if ( equals ../whichPage "home")}}
+                        <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
+                    {{/if}}
+                    {{#if ( equals ../whichPage "dashboard")}}
+                        <p class="my-0 mr-2">{{{createdAt}}}</p>
+                    {{/if}}
+                </section>
                 {{#if ( equals ../whichPage "home")}}
-                    <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
-                {{/if}}
-                {{#if ( equals ../whichPage "dashboard")}}
-                    <p class="my-0 mr-2">{{{createdAt}}}</p>
+                    <p class="ml-3">{{{content}}}</p>
                 {{/if}}
             </section>
-            {{#if ( equals ../whichPage "home")}}
-                <p class="ml-3">{{{content}}}</p>
-            {{/if}}
-         </section>
-    {{/each}}
+        {{/each}}
 
-    {{#if (equals whichPage "dashboard")}}
-    <section class="d-flex align-items-center justify-content-around">
-        {{#if ( equals loggedIn "true")}}
-            <button id="new-post-button" class="bg-secondary">+ New Post</button>
+        {{#if (equals whichPage "dashboard")}}
+        <section class="d-flex align-items-center justify-content-around">
+            
+            {{#if ( equals displayCudForm "false")}}
+                <button id="new-post-button" class="bg-secondary">+ New Post</button>
+            {{/if}}
+            
+        </section>
         {{/if}}
-    </section>
     {{/if}}
 </section>
 <script id="post-functions-script" src="/javascript/prepare-post-functions.js" data-which-page="{{{whichPage}}}"></script>

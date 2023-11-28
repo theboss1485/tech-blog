@@ -13,15 +13,15 @@ let welcomeLine = document.getElementById("welcome-line");
 
 if(createButton !== null){
 
-    createButton.addEventListener("click", () => {
+    createButton.addEventListener("click", (event) => {
 
-        if(createButton.dataset.type === "blog post"){
+        if(createButton.dataset.type === "blog-post"){
 
-            createElement("blog post");
+            createElement(event, "blog post");
 
         } else if (createButton.dataset.type === "comment"){
 
-            createElement("comment");
+            createElement(event, "comment");
         }
     });
 }
@@ -30,7 +30,7 @@ if(updateButton !== null){
 
     updateButton.addEventListener("click", (event) => {
 
-        if(updateButton.dataset.type === "blog post"){
+        if(updateButton.dataset.type === "blog-post"){
 
             updateElement(event, "blog post");
 
@@ -45,7 +45,7 @@ if(deleteButton !== null){
 
     deleteButton.addEventListener("click", (event) => {
 
-        if(deleteButton.dataset.type === "blog post"){
+        if(deleteButton.dataset.type === "blog-post"){
 
             deleteElement(event, "blog post");
 
@@ -58,51 +58,78 @@ if(deleteButton !== null){
 
 
 
-async function createElement(elementType){
+async function createElement(event, elementType){
 
-    let requestUrl = generateUrlPiece(elementType);
-    let requestBody = generateBody(elementType);
+    if(performValidation(elementType) === true){
 
-    try {
+        let requestUrl = generateUrlPiece(elementType);
+        let requestBody = generateBody(elementType);
 
-        await fetch(requestUrl, {
+        try {
 
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: requestBody
-    
-        });
+            await fetch(requestUrl, {
 
-        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
-    
-    } catch(error){
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: requestBody
+        
+            });
+            
+            handleRedirection(elementType);
+        
+        } catch(error){
 
-        console.log(error)
+            console.log(error)
+        }
+    } else {
+
+        if(elementType === "comment"){
+
+            document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newElement=true&error=invalidCommentSubmission`;
+
+        } if(elementType === "blog post"){
+
+            document.location.href =`/dashboard?cudPost=true&newElement=true&error=invalidPostSubmission`;
+        }
     }
 }
 
 async function updateElement(event, elementType){
 
-    let requestUrl = generateUrlPiece(elementType);
-    let requestBody = generateBody(elementType);
+    if(performValidation(elementType) === true){
 
-    let id = event.target.dataset.editElementId;
-    
-    try {
+        let requestUrl = generateUrlPiece(elementType);
+        let requestBody = generateBody(elementType);
 
-        await fetch(`${requestUrl}${id}`, {
+        let id = event.target.dataset.editElementId;
+        
+        try {
 
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: requestBody
-    
-        });
+            await fetch(`${requestUrl}${id}`, {
 
-        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
-    
-    } catch(error){
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: requestBody
+        
+            });
 
-        console.log(error)
+            handleRedirection(elementType);
+        
+        } catch(error){
+
+            console.log(error)
+        }
+    } else {
+
+        if (elementType === "comment"){
+
+            document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&
+                                    cudComment=true&newElement=false&editCommentId=${event.target.dataset.editElementId}&error=invalidCommentSubmission`;
+        
+        } else if (elementType === "blog post"){
+
+            document.location.href =`/dashboard/?cudPost=true&newElement=false&postId=${event.currentTarget.dataset.editElementId}&error=invalidPostSubmission`;
+        }
     }
 }
 
@@ -120,7 +147,9 @@ async function deleteElement(event, elementType){
             headers: {"Content-Type": "application/json"},
         });
 
-        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
+        handleRedirection(elementType);
+        
+        //document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
     
     } catch(error){
 
@@ -146,7 +175,7 @@ function generateBody(elementType){
 
     if(elementType === "blog post"){
 
-        let loggedInUserId = welcomeLine.dataset.loggedInUserId;
+        let loggedInUserId = welcomeLine.dataset.userId;
 
         body =  JSON.stringify({ title: postTitle.value, content: content.value, user_id: loggedInUserId});
     
@@ -159,4 +188,46 @@ function generateBody(elementType){
     }
 
     return body;
+}
+
+function handleRedirection(elementType){
+
+    if(elementType === "blog post"){
+
+        document.location.href =`/dashboard`
+    
+    } else if(elementType === "comment"){
+
+        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
+    }
+}
+
+function performValidation(elementType){
+
+    let titleRegex = /^[a-zA-Z0-9][a-zA-Z0-9-:!?]*[a-zA-Z0-9:]?$/
+
+    let trimmedContent = content.value.trim();
+    let passingRegex = titleRegex.test(postTitle.value) 
+
+    if(elementType === "blog post"){
+
+        let trimmedTitle = postTitle.value.trim();
+
+
+
+        if((trimmedTitle === "") || (passingRegex === false) || (trimmedContent === "")){
+
+            return false
+        }
+
+    } else if (elementType === "comment"){
+
+        if(trimmedContent === ""){
+
+            return false
+        }
+
+    }
+
+    return true;
 }

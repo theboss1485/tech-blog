@@ -109,13 +109,28 @@ router.get('/signup', (req, res) => {
 
 router.get('/single-blog-post-and-comments', async (req, res) => {
 
-    let blogPostData = await BlogPost.findOne({include: User}, {
+    let errorMessage = "";
+    
+    if(req.query.error === "invalidCommentSubmission"){
+
+        errorMessage = `The content of a comment must not be left blank.  Try again.`
+    }
+
+    let blogPostData = await BlogPost.findOne({
+        
+        include: [
+            {
+                model: User
+            }
+        ],
 
         where: {
 
             id: req.query.id
         }
     });
+
+    console.log("req.query.id", req.query.id);
 
     let blogPost = blogPostData.get({plain: true});
 
@@ -138,6 +153,8 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
         }
     });
 
+    console.log("blog post", blogPost);
+
     let editCommentId = "";
 
     if(req.query.editCommentId !== null && req.query.editCommentId !== undefined){
@@ -146,13 +163,13 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
     }
 
     renderPlainElements(commentData, "comment", req, res, "Tech Blog", 
-                        renderLoggedInVariable(req), "N/A", editCommentId, req.query.cudComment, req.query.newComment,
+                        renderLoggedInVariable(req), "N/A", req.query.cudComment, req.query.newElement, errorMessage, editCommentId, 
                          blogPost.user.id, blogPost.id, blogPost.title, blogPost.content, blogPost.user.username, blogPost.createdAt);
 });
 
 router.get('/cud-post', async (req, res) => {
 
-    res.render('create-update-delete-post', {
+    res.render('create-update-delete', {
 
         newPost: "true",
         postPageTitle: "Create New Post",
@@ -215,6 +232,14 @@ router.get('/dashboard', async (req, res) => {
     
     } else {
 
+        let errorMessage = "";
+
+        if(req.query.error === "invalidPostSubmission"){
+
+            errorMessage = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
+                                and can't start with those characters or end with ':' or '-'.  Try again'`
+        }
+
         //console.log("req.session.user_id 2", req.session.user_id);
 
         let blogPostData = await BlogPost.findAll({
@@ -225,8 +250,23 @@ router.get('/dashboard', async (req, res) => {
         }
 
     });
-    
-        renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard");
+
+        if(req.query.cudPost !== "true"){
+
+            renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard");
+        
+        } else {
+
+            if(req.query.newElement === "true"){
+
+                renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard", req.query.cudPost, req.query.newElement, errorMessage, "");
+
+            } else {
+
+                renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), 
+                                    "dashboard", req.query.cudPost, req.query.newElement, errorMessage, req.query.postId);
+            }
+        }
     }
 });
 

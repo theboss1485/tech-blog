@@ -24,19 +24,17 @@ if(createCommentButton !== null){
 
 
 
-async function openCommentEditor(newComment, event){
+async function openCommentEditor(newElement, event){
 
     let blogPost = document.getElementById("single-blog-post");
 
-    if(newComment === "true"){
+    if(newElement === "true"){
 
-        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newComment=${newComment}`;
+        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newElement=${newElement}`;
     
-    } else if (newComment === "false"){
-
-
-
-        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newComment=${newComment}&editCommentId=${event.target.dataset.content}`;
+    } else if (newElement === "false"){
+        
+        document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newElement=${newElement}&editCommentId=${event.target.dataset.content}`;
     }
 
     

@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
     BlogPost.create({
 
         title: req.body.title,
-        contents: req.body.contents,
+        content: req.body.content,
         user_id: req.session.user_id
     
     }).then((blogPost) => {
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
         
         {
             title: req.body.title,
-            contents: req.body.contents
+            content: req.body.content
         },
         {
             where: {

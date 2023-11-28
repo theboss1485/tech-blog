@@ -9,35 +9,38 @@ let createPostButton = document.getElementById("new-post-button");
 
 let individualPosts = postsSection.children;
 
-if(whichPage === "home"){
+for(let counter = 0; counter < individualPosts.length - 1; counter++){
 
-    for(let counter = 0; counter < individualPosts.length - 1; counter++){
+    if(individualPosts[counter].id !=="create-update-delete-post"){
 
         individualPosts[counter].addEventListener("click", async (event) => {
-            
+        
             // window.location.href =`/comments?post=${event.currentTarget.dataset.databasePostId}`;
-
-            document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}&cudComment=false`;
-        });
-    }
-
-} else if(whichPage === "dashboard"){
-
-    individualPosts.forEach(post => {
-
-        post.addEventListener("click", openPostEditor)
-    });
-
-    if(createPostButton !== undefined && createPostButton !== null){
-
-        createPostButton.addEventListener("click", (event) => {
-
-            openPostEditor("true", event);
+    
+            if(whichPage === "home"){
+    
+                document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}&cudComment=false`;
+            
+            } else if (whichPage === "dashboard"){
+    
+                openPostEditor("false", event)
+            }
+    
+            
         });
     }
 }
 
-async function openPostEditor(newPost, event){
+if(createPostButton !== undefined && createPostButton !== null){
+
+    createPostButton.addEventListener("click", (event) => {
+
+        openPostEditor("true", event);
+    });
+}
+
+
+async function openPostEditor(newElement, event){
 
     if(createPostButton !== undefined && createPostButton !== null){
 
@@ -47,20 +50,13 @@ async function openPostEditor(newPost, event){
         }
     }
 
-    if(newPost === "true"){
+    if(newElement === "true"){
 
-        await fetch('/api/blogPosts/cud-post');
+        document.location.href =`/dashboard?cudPost=true&newElement=${newElement}`;
 
-        document.location.href ='/cud-post';
+    } else if(newElement === "false"){
 
-    } else if(newPost === "false"){
-
-        await fetch(`/cud-post/${event.currentTarget.dataset.databasePostId}`);
-
-        //await fetch(`/api/blogPosts/${event.currentTarget.dataset.databasePostId}`);
-
-
-        document.location.href =`/cud-post/${event.currentTarget.dataset.databasePostId}`;
+        document.location.href =`/dashboard/?cudPost=true&newElement=${newElement}&postId=${event.currentTarget.dataset.databasePostId}`;
     }
 
     

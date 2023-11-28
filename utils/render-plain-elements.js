@@ -7,8 +7,10 @@
 //     post.addEventListener("click", openPostEditor);
 // });
 
-function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, specificPage, editElementId, cudForm = "false", 
-                            newComment = "false", userId = "", blogPostId = "", parentTitle = "", parentContent = "", parentUser = "", parentCreatedDate = ""){
+function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, specificPage, cudForm = "false", newElement = "false", errorMessage, editElementId = "",
+                             userId = "", blogPostId = "", parentTitle = "", parentContent = "", parentUser = "", parentCreatedDate = ""){
+
+                                console.log("edit Element id 1", editElementId);
 
                                 console.log("blog post id", blogPostId);
 
@@ -33,47 +35,65 @@ function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, spec
 
     let cudFormTitle = undefined;
 
-    if(newComment === "true"){
+    if(dataType === "blog-post"){
 
-        cudFormTitle = "Add a New Comment";
+        if(newElement === "true"){
 
-    } else {
+            cudFormTitle = "Add a New Blog Post";
+        
+        } else if(newElement === "false"){
 
-        cudFormTitle = "Edit or Delete a Comment";
-    }
-
-    if(newComment === "true"){}
-
-    if(dataType === "comment"){
-
-        let elementInQuestion = "";
-
-        if(editElementId !== ""){
-
-            elementInQuestion = plainElements.find(function(element){
-
-                
-                console.log("element.id", element.id)
-                console.log("edit comment id", parseInt(editElementId));
-                console.log("-------")
-                if(element.id === parseInt(editElementId)){
-                    return element.id;
-                }
-            }).content;
+            cudFormTitle = "Edit or Delete a Blog Post";
         }
 
-        // console.log("blog post id", blogPostId);
+    } else if(dataType === "comment"){
 
-        // console.log("Plain Elements", plainElements);
+        if(newElement === "true"){
 
-        // console.log("logged in user", req.session.user_id);
+            cudFormTitle = "Add a New Comment";
+        
+        } else if(newElement === "false"){
 
-        console.log("plain elements", plainElements);
+            cudFormTitle = "Edit or Delete a Comment";
+        }
+
+    }
+
+    console.log("edit Element id 2", editElementId);
+
+    let elementInQuestion = "";
+    let contentInQuestion = "";
+    let titleInQuestion = "";
+    if (editElementId !== "" && editElementId !== undefined){
+
+        console.log("edit Element id 3", editElementId);
+
+        elementInQuestion = plainElements.find(function(element){
+
+            if(element.id === parseInt(editElementId)){
+
+                return element.id;
+            }
+        });
+
+        contentInQuestion = elementInQuestion.content
+        titleInQuestion = elementInQuestion.title;
+    }
+
+    
+
+    if (dataType === "comment"){
+
+        
 
         res.render("single-blog-post", {
-            elementInQuestion, editElementId,
-            plainElements, cudFormTitle, userId,
+            contentInQuestion, 
+            editElementId,
+            plainElements, 
+            cudFormTitle, 
+            userId,
             loggedInUserId: req.session.user_id,
+            errorMessage,
             title: pageTitle, 
             type: dataType,
             loginOrLogout: logInOrLogOut, 
@@ -86,18 +106,29 @@ function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, spec
             blogPostUser: parentUser,
             blogPostCreatedDate: parentCreatedDate,
             displayCudForm: cudForm,
-            new: newComment
+            new: newElement
         });
     
     } else if (dataType === "blog-post"){
 
+        
+
         res.render(dataType, {
+
+            cudFormTitle,
+            titleInQuestion,
+            contentInQuestion,
+            editElementId,
             loggedInUserId: req.session.user_id,
+            errorMessage,
+            displayCudForm: cudForm,
+            type: dataType,
             plainElements, title: pageTitle, 
             loginOrLogout: logInOrLogOut, 
             welcomeLoggedInUser: `Welcome, ${req.session.username}`, 
             loggedIn: signedIn,
-            whichPage: specificPage
+            whichPage: specificPage,
+            new: newElement
         });
     } 
 
