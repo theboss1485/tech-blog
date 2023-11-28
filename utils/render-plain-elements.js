@@ -7,7 +7,7 @@
 //     post.addEventListener("click", openPostEditor);
 // });
 
-function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, specificPage, parentTitle = "", parentContent = ""){
+function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, specificPage, parentTitle = "", parentContent = "", parentUser = "", parentCreatedDate = ""){
 
     const plainElements = data.map((element) => element.get({ plain: true }));
 
@@ -36,7 +36,11 @@ function renderPlainElements(data, dataType, req, res, pageTitle, signedIn, spec
             loggedIn: signedIn,
             whichPage: specificPage,
             blogPostTitle: parentTitle,
-            blogPostContent: parentContent
+            blogPostContent: parentContent,
+            blogPostUser: parentUser,
+            blogPostCreatedDate: parentCreatedDate
+
+
         });
     
     } else {

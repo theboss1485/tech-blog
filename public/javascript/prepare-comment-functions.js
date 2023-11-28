@@ -21,6 +21,8 @@ let createCommentButton = document.getElementById("new-comment-button");
 
 async function openCommentEditor(newComment){
 
+    blogPost
+
     document.location.href =`/single-blog-post/id=${${event.currentTarget.dataset.databasePostId}}`;
 
     // if(newComment === "true"){

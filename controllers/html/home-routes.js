@@ -116,7 +116,7 @@ router.get('/signup', (req, res) => {
 
 router.get('/single-blog-post-and-comments', async (req, res) => {
 
-    let blogPostData = await BlogPost.findOne({
+    let blogPostData = await BlogPost.findOne({include: User}, {
 
         where: {
 
@@ -149,7 +149,7 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
 
     console.log(commentData);
 
-    renderPlainElements(commentData, "blog-post", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A", blogPost.title, blogPost.content);
+    renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A", blogPost.title, blogPost.content);
 });
 
 router.get('/cud-post', async (req, res) => {
