@@ -7,11 +7,14 @@ const Comment = require('../models/Comment');
 const userData = require('./user-seeds.json');
 const blogPostData = require('./blog-post-seeds.json');
 const commentData = require('./comment-seeds.json');
+const bcrypt = require('bcrypt');
+
+let userDataWithHashedPasswords = hashUserPasswords(userData);
 
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
 
-  await User.bulkCreate(userData, {
+  await User.bulkCreate(userDataWithHashedPasswords, {
     individualHooks: true,
     returning: true,
   });
@@ -41,4 +44,16 @@ try{
 } catch(error){
 
     console.log(error)
+}
+
+function hashUserPasswords(userData){
+
+    for(let counter = 0; counter < userData.length; counter++){
+
+        let hashedPassword = bcrypt.hashSync(userData[counter].password, 10)
+
+        userData[counter].password = hashedPassword;
+    }
+
+    return userData;
 }

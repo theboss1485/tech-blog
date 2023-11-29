@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {User} = require('../../models');
 const {sessionSaveWithPromise, sessionDestroyWithPromise} = require('../../utils/session-promise-functions.js')
+const bcrypt = require('bcrypt');
 
 
 router.get('/', (req, res) =>{
@@ -27,13 +28,15 @@ router.post('/', async (req, res) =>{
                 username: req.body.username
             }
         });
+
         if(!duplicateUser){
 
+            let hashedPassword = await bcrypt.hash(req.body.password, 10);
 
             let validUser = await User.create({
 
                 username: req.body.username,
-                password: req.body.password,
+                password: hashedPassword
         
             });
     
@@ -91,7 +94,6 @@ router.post('/login', async (req, res) =>{
             where: {
 
                 username: req.body.username,
-                //password: req.body.password
             }
         });
 
@@ -100,13 +102,18 @@ router.post('/login', async (req, res) =>{
         
 
         let validUser = undefined;
+        let validPassword = undefined;
 
-        if(userData){
-
-            validUser = await userData.get({plain: true});
-        }
+        validUser = await userData.get({plain: true});
 
         if(validUser !== undefined){
+
+            validPassword = await bcrypt.compare(req.body.password, validUser.password)
+        }
+
+        if (validPassword !== undefined){
+
+
             
 
             req.session.user_id = validUser.id
