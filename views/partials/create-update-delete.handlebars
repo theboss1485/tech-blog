@@ -4,20 +4,20 @@
             <h2>{{{cudFormTitle}}}</h2>
         </section>
         <section>
-            {{#if (equals type "blog-post")}}
+            {{#if (equals type "Blog Post")}}
                 <label for="post-title" class="d-block ml-2">Title:</label>
-                <input type="text" id="post-title" class="col-9 d-block ml-2" value="{{{titleInQuestion}}}">
+                <input type="text" id="post-title" class="col-9 d-block ml-2" value="{{{elementToBeEdited.title}}}">
             {{/if}}
             <label for="content"class="d-block mt-2 ml-2">Content:</label>
-            <input type="text" id="content" class="col-9 d-block ml-2" value="{{{contentInQuestion}}}">
-            {{#if (equals new "true")}}
+            <input type="text" id="content" class="col-9 d-block ml-2" value="{{{elementToBeEdited.content}}}">
+            {{#if newElement}}
                 <button id="create-button" data-type="{{{type}}}" class="col-9 ml-2 mt-2">Create New {{{type}}}</button>
             {{/if}}
-            {{#if (equals new "false")}}
+            {{#unless newElement}}
                 <button id="update-button" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Update {{{type}}}</button>
                 <button id="delete-button" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Delete {{{type}}}</button>
-            {{/if}} 
-            <p id="error-message" class="text-center text-danger">{{{errorMessage}}}</p>
+            {{/unless}} 
+            <p id="error-message" class="text-center text-danger">{{{error}}}</p>
         </section>
     </section>
     <script src="/javascript/create-update-delete.js" defer></script>

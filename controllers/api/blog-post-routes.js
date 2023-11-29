@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {User, BlogPost} = require('../../models');
-const renderPlainElements = require('../../utils/render-plain-elements.js');
+const renderPlainElements = require('../../utils/render-blog-posts.js');
 
 
 router.get('/:id', async (req, res) => {

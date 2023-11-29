@@ -56,7 +56,7 @@ async function openPostEditor(newElement, event){
 
     } else if(newElement === "false"){
 
-        document.location.href =`/dashboard/?cudPost=true&newElement=${newElement}&postId=${event.currentTarget.dataset.databasePostId}`;
+        document.location.href =`/dashboard/?cudPost=true&newElement=${newElement}&editPostId=${event.currentTarget.dataset.databasePostId}`;
     }
 
     

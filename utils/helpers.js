@@ -16,18 +16,6 @@ module.exports = {
         }
     },
 
-    doubleEquals: (argumentOne, argumentTwo, argumentThree, argumentFour) =>{
-
-        if((argumentOne === argumentTwo) && (argumentThree === argumentFour)){
-
-            return true;
-        
-        } else {
-
-            return false;
-        } 
-    },
-
     notEqual: (argumentOne, argumentTwo) => {
 
         if(argumentOne === argumentTwo){

@@ -1,5 +1,5 @@
 <section id="comments-section" class="bg-light">
-    {{#each plainElements as |comment|}}
+    {{#each comments as |comment|}}
         <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-comment-id="{{{comment.id}}}">
             <section class="bg-secondary d-flex justify-content-between align-items-center">
                 <h2>{{{comment.title}}}</h2>
@@ -13,12 +13,14 @@
     {{/each}}
 
     <section class="d-flex align-items-center justify-content-around">
-        {{#if (doubleEquals loggedIn "true" newCommentButton "true")}}
-            <button id="new-comment-button" class="bg-secondary">+ New Comment</button>
+        {{#if loggedIn}}
+            {{#if newCommentButton}}
+                <button id="new-comment-button" class="bg-secondary">+ New Comment</button>
+            {{/if}}
         {{/if}}
-        {{#if (equals loggedIn "false")}}
+        {{#unless loggedIn}}
             <p> You must <a href="/login">log in</a> before adding a comment!!</p>
-        {{/if}}
+        {{/unless}}
     </section>
 </section>
 <script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" defer></script>

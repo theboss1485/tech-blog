@@ -29,6 +29,7 @@ router.post('/', async (req, res) =>{
         });
         if(!duplicateUser){
 
+
             let validUser = await User.create({
 
                 username: req.body.username,
@@ -42,12 +43,10 @@ router.post('/', async (req, res) =>{
 
            await sessionSaveWithPromise(req);
     
-            //res.render("blog-post", {title: "Your Dashboard"});
             res.redirect(301, `../../dashboard`);
         
         } else {
 
-           // res.render('login-signup', {errorMessage: "This username is already taken.  Please try again!"});
             res.redirect(301, `/signup?taken=true`);
         } 
 
@@ -107,16 +106,8 @@ router.post('/login', async (req, res) =>{
             validUser = await userData.get({plain: true});
         }
 
-        
-
         if(validUser !== undefined){
             
-            // req.session.save(() => {
-            //     req.session.user_id = validUser.id
-            //     req.session.logged_in = true;
-            //     req.session.username = validUser.username;
-            //     res.redirect(301, `../../dashboard`);
-            // })
 
             req.session.user_id = validUser.id
             req.session.logged_in = true;
@@ -124,22 +115,10 @@ router.post('/login', async (req, res) =>{
 
             await sessionSaveWithPromise(req);
 
-            req.session.user_id = validUser.id
-            req.session.logged_in = true;
-            req.session.username = validUser.username;
-
-            
-
-            // await req.session.save();
-            // req.session.save();
-        
-         //   console.log("req.session.user_id", req.session.user_id);
-
            res.redirect(301, `../../dashboard`);
         
         } else {
 
-            //res.render('login-signup', {errorMessage: "Your username or password is incorrect  Please try again!"});
             res.redirect(301, `/login?valid=false`);
         }
 

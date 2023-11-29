@@ -20,10 +20,10 @@
 <script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" data-which-page="{{{loggedIn}}}" defer></script> --}}
 
 <section id="posts-section" class="bg-light">
-    {{#if ( equals displayCudForm "true")}}
+    {{#if displayCudForm}}
             {{> create-update-delete}}
     {{else}}
-        {{#each plainElements as |post|}}
+        {{#each blogPosts as |post|}}
             <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
                 <section class="bg-secondary d-flex justify-content-between align-items-center">
                     <h2>{{{title}}}</h2>
@@ -43,9 +43,9 @@
         {{#if (equals whichPage "dashboard")}}
         <section class="d-flex align-items-center justify-content-around">
             
-            {{#if ( equals displayCudForm "false")}}
+            {{#unless displayCudForm}}
                 <button id="new-post-button" class="bg-secondary">+ New Post</button>
-            {{/if}}
+            {{/unless}}
             
         </section>
         {{/if}}

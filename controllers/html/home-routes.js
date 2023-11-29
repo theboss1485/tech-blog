@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const {User, BlogPost, Comment} = require('../../models');
 const { sequelize } = require('../../models/User.js');
-const renderPlainElements = require('../../utils/render-plain-elements.js');
-const renderCommentData = require('../../utils/render-comment-data.js');
+const renderBlogPosts = require('../../utils/render-blog-posts.js');
+const renderPlainElements = require('../../utils/render-blog-posts.js');
+const renderSinglePostAndComments = require('../../utils/render-single-post-and-comments.js');
 //let loggedInUser = require('activeUser');
 
 router.get('/users/', (req, res) =>{
@@ -20,22 +21,25 @@ router.get('/users/', (req, res) =>{
     });
 });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    res.set('Cache-Control', 'no-store');
+    try{
 
-    BlogPost.findAll({include: User}).then((blogPostData) => {
+        res.set('Cache-Control', 'no-store');
 
-        renderPlainElements(blogPostData, "blog-post", req, res, "Tech Blog", renderLoggedInVariable(req), "home");
+        let blogPostData = await BlogPost.findAll({include: User})  
 
-        res.status(200).json;
+        let blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
 
-    }).catch((error) => {
+        renderBlogPosts(blogPosts, req, res, "Tech Blog", "home");
+
+    } catch(error){
 
         console.log(error);
         res.status(400).json(error);
-    });
-})
+    }
+});
+
 
 router.get('/login', (req, res) => {
 
@@ -51,7 +55,7 @@ router.get('/login', (req, res) => {
 
         loginOrLogoutText = "Logout"
     }
-    try{
+    
 
         let invalidCredentials = "";
 
@@ -59,6 +63,8 @@ router.get('/login', (req, res) => {
 
             invalidCredentials = "Your username or password is incorrect.  Please try again!";
         }
+
+    try{
 
         res.render('login-signup', {
 
@@ -68,8 +74,6 @@ router.get('/login', (req, res) => {
             errorMessage: invalidCredentials,
             loginOrLogout: loginOrLogoutText
         });
-
-        res.status(200).json;
     
     } catch(error) {
 
@@ -109,14 +113,16 @@ router.get('/signup', (req, res) => {
 
 router.get('/single-blog-post-and-comments', async (req, res) => {
 
-    let errorMessage = "";
+    let error = "";
     
     if(req.query.error === "invalidCommentSubmission"){
 
-        errorMessage = `The content of a comment must not be left blank.  Try again.`
+        error = `The content of a comment must not be left blank.  Try again.`
     }
 
-    let blogPostData = await BlogPost.findOne({
+    try{
+
+        let blogPostData = await BlogPost.findOne({
         
         include: [
             {
@@ -128,13 +134,11 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
 
             id: req.query.id
         }
-    });
+        });
 
-    console.log("req.query.id", req.query.id);
+        let blogPost = blogPostData.get({plain: true});
 
-    let blogPost = blogPostData.get({plain: true});
-
-    let commentData = await Comment.findAll({
+        let commentData = await Comment.findAll({
 
         include: [
             {
@@ -151,65 +155,80 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
 
             blog_post_id: req.query.id
         }
-    });
-
-    console.log("blog post", blogPost);
-
-    let editCommentId = "";
-
-    if(req.query.editCommentId !== null && req.query.editCommentId !== undefined){
-
-        editCommentId = req.query.editCommentId
-    }
-
-    renderPlainElements(commentData, "comment", req, res, "Tech Blog", 
-                        renderLoggedInVariable(req), "N/A", req.query.cudComment, req.query.newElement, errorMessage, editCommentId, 
-                         blogPost.user.id, blogPost.id, blogPost.title, blogPost.content, blogPost.user.username, blogPost.createdAt);
-});
-
-router.get('/cud-post', async (req, res) => {
-
-    res.render('create-update-delete', {
-
-        newPost: "true",
-        postPageTitle: "Create New Post",
-
-    });
-});
-
-router.get('/cud-post/:id', async (req, res) =>{
-
-    let blogPostData = await BlogPost.findOne({
-
-        where: {
-
-            user_id: req.params.id
-        }
-    })
-
-    let blogPost = blogPostData.get({plain: true});
-
-    if(req.query.newPost === "true"){
-
-        res.render('create-update-delete', {
-
-            newPost: "false",
-            postPageTitle: "Edit or Delete Post",
         });
+
+        let comments = commentData.map((comment) => comment.get({ plain: true }));
+
+        // console.log("blog post", blogPost);
+
+        // let editCommentId = "";
+
+        // if(req.query.editCommentId !== null && req.query.editCommentId !== undefined){
+
+        //     editCommentId = req.query.editCommentId
+        // }
+
+        renderSinglePostAndComments(comments, blogPost, req, res, error);
+
+    } catch(error){
+
+        console.log(error);
+        res.status(400).json(error);
+    }
+});
+
+// router.get('/cud-post', async (req, res) => {
+
+//     try{
+
+//         res.render('create-update-delete', {
+
+//             newPost: "true",
+//             postPageTitle: "Create New Post",
+    
+//         });
+
+//     } catch{
+
+//         console.log(error);
+//         res.status(400).json(error);
+//     }
+
+    
+// });
+
+// router.get('/cud-post/:id', async (req, res) =>{
+
+//     let blogPostData = await BlogPost.findOne({
+
+//         where: {
+
+//             user_id: req.params.id
+//         }
+//     })
+
+//     let blogPost = blogPostData.get({plain: true});
+
+//     if(req.query.newPost === "true"){
+
+//         res.render('create-update-delete', {
+
+//             newPost: "false",
+//             postPageTitle: "Edit or Delete Post",
+//         });
         
     
-    } else if(req.query.newPost === "false"){
+//     } else if(req.query.newPost === "false"){
 
-        res.render('create-update-delete', {
+//         res.render('create-update-delete', {
 
-            newPost: "false",
-            postPageTitle: "Edit or Delete Post",
-            blogPostTitle: blogPost.title,
-            blogPostContents: blogPost.contents
-        });
-    }
-});
-
+//             newPost: "false",
+//             postPageTitle: "Edit or Delete Post",
+//             blogPostTitle: blogPost.title,
+//             blogPostContents: blogPost.contents
+//         });
+//     }
+// });
 
 // router.get('/blogPosts/:id', (req, res) => {
 
@@ -226,48 +245,63 @@ router.get('/cud-post/:id', async (req, res) =>{
 
 router.get('/dashboard', async (req, res) => {
 
-    if(req.session.logged_in === false ||req.session.logged_in === undefined ){
+    try{
 
-        res.redirect('/login');
-    
-    } else {
+        if(req.session.logged_in === false ||req.session.logged_in === undefined ){
 
-        let errorMessage = "";
-
-        if(req.query.error === "invalidPostSubmission"){
-
-            errorMessage = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
-                                and can't start with those characters or end with ':' or '-'.  Try again'`
-        }
-
-        //console.log("req.session.user_id 2", req.session.user_id);
-
-        let blogPostData = await BlogPost.findAll({
-
-        where: {
-
-            user_id: req.session.user_id
-        }
-
-    });
-
-        if(req.query.cudPost !== "true"){
-
-            renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard");
+            res.redirect('/login');
         
         } else {
 
-            if(req.query.newElement === "true"){
+            let error = "";
 
-                renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard", req.query.cudPost, req.query.newElement, errorMessage, "");
+            if(req.query.error === "invalidPostSubmission"){
 
-            } else {
-
-                renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), 
-                                    "dashboard", req.query.cudPost, req.query.newElement, errorMessage, req.query.postId);
+                error = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
+                        and can't start with those characters or end with ':' or '-'.  Try again'`
             }
+
+            //console.log("req.session.user_id 2", req.session.user_id);
+
+            let blogPostData = await BlogPost.findAll({
+
+            where: {
+
+                user_id: req.session.user_id
+            }
+
+            });
+
+            let blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
+
+
+            renderBlogPosts(blogPosts, req, res, "Your Dashboard", "dashboard", error)
+
+            // if(req.query.cudPost !== "true"){
+
+            //     renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard");
+            
+            // } else {
+
+            //     if(req.query.newElement === "true"){
+
+            //         renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard", req.query.cudPost, req.query.newElement, errorMessage, "");
+
+            //     } else {
+
+            //         renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), 
+            //                             "dashboard", req.query.cudPost, req.query.newElement, errorMessage, req.query.postId);
+            //     }
+            // }
         }
+
+    } catch {
+
+        console.log(error);
+        res.status(400).json(error);
     }
+
+    
 });
 
 router.get('/comments', async (req, res) => {
@@ -291,7 +325,16 @@ router.get('/comments', async (req, res) => {
         }
     });
 
-    renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A");
+    try{
+
+        renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A");
+    
+    } catch {
+
+        console.log(error);
+        res.status(400).json(error);
+    }
+    
 });
 
 function renderLoggedInVariable(req){
@@ -309,9 +352,5 @@ function renderLoggedInVariable(req){
 
     return loggedIn;
 }
-
-
-
-
 
 module.exports = router;

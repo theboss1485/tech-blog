@@ -11,45 +11,45 @@ let content = document.getElementById("content");
 let singleBlogPost = document.getElementById("single-blog-post");
 let welcomeLine = document.getElementById("welcome-line");
 
-if(createButton !== null){
+if (createButton !== null){
 
-    createButton.addEventListener("click", (event) => {
+    createButton.addEventListener("click", () => {
 
-        if(createButton.dataset.type === "blog-post"){
+        if (createButton.dataset.type === "Blog Post"){
 
-            createElement(event, "blog post");
+            createElement("blog post");
 
-        } else if (createButton.dataset.type === "comment"){
+        } else if (createButton.dataset.type === "Comment"){
 
-            createElement(event, "comment");
+            createElement( "comment");
         }
     });
 }
 
-if(updateButton !== null){
+if (updateButton !== null){
 
     updateButton.addEventListener("click", (event) => {
 
-        if(updateButton.dataset.type === "blog-post"){
+        if (updateButton.dataset.type === "Blog Post"){
 
             updateElement(event, "blog post");
 
-        } else if (updateButton.dataset.type === "comment"){
+        } else if (updateButton.dataset.type === "Comment"){
 
             updateElement(event, "comment");
         }
     });
 }
 
-if(deleteButton !== null){
+if (deleteButton !== null){
 
     deleteButton.addEventListener("click", (event) => {
 
-        if(deleteButton.dataset.type === "blog-post"){
+        if (deleteButton.dataset.type === "Blog Post"){
 
             deleteElement(event, "blog post");
 
-        } else if (deleteButton.dataset.type === "comment"){
+        } else if (deleteButton.dataset.type === "Comment"){
 
             deleteElement(event, "comment");
         }
@@ -58,7 +58,7 @@ if(deleteButton !== null){
 
 
 
-async function createElement(event, elementType){
+async function createElement(elementType){
 
     if(performValidation(elementType) === true){
 
@@ -128,7 +128,7 @@ async function updateElement(event, elementType){
         
         } else if (elementType === "blog post"){
 
-            document.location.href =`/dashboard/?cudPost=true&newElement=false&postId=${event.currentTarget.dataset.editElementId}&error=invalidPostSubmission`;
+            document.location.href =`/dashboard/?cudPost=true&newElement=false&editPostId=${event.currentTarget.dataset.editElementId}&error=invalidPostSubmission`;
         }
     }
 }
@@ -182,9 +182,8 @@ function generateBody(elementType){
     } else if(elementType === "comment"){
 
         let blogPostId = singleBlogPost.dataset.databasePostId;
-        let blogPostUserId = singleBlogPost.dataset.userId;
 
-        body =  JSON.stringify({content: content.value, user_id: blogPostUserId, blog_post_id: blogPostId});
+        body =  JSON.stringify({content: content.value, user_id: welcomeLine.dataset.userId, blog_post_id: blogPostId});
     }
 
     return body;
@@ -204,15 +203,16 @@ function handleRedirection(elementType){
 
 function performValidation(elementType){
 
-    let titleRegex = /^[a-zA-Z0-9][a-zA-Z0-9-:!?]*[a-zA-Z0-9:]?$/
+    let titleRegex = /^[a-zA-Z0-9 ][a-zA-Z0-9-:!? ]*[a-zA-Z0-9!? ]?$/
 
     let trimmedContent = content.value.trim();
-    let passingRegex = titleRegex.test(postTitle.value) 
+    
 
     if(elementType === "blog post"){
 
         let trimmedTitle = postTitle.value.trim();
 
+        let passingRegex = titleRegex.test(postTitle.value); 
 
 
         if((trimmedTitle === "") || (passingRegex === false) || (trimmedContent === "")){
