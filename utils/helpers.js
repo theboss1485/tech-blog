@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 // The expert learning assistant chatbot told me how to use the UUID package.
 
 const {v4: uuidv4} = require('uuid')
@@ -16,16 +17,10 @@ module.exports = {
         }
     },
 
-    notEqual: (argumentOne, argumentTwo) => {
+    formatDate: (dateToBeFormatted) => {
 
-        if(argumentOne === argumentTwo){
-
-            return false;
-
-        } else {
-
-            return true;
-        }
+        let formattedDate = dayjs(dateToBeFormatted).format('MM/DD/YYYY');
+        return formattedDate;
     },
 
     generateUuid: () => {

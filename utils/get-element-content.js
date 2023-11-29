@@ -1,4 +1,4 @@
-function getElementContent(elements, editElementId){
+function getElementContent(res, elements, editElementId){
 
     elementInQuestion = elements.find(function(element){
 
@@ -14,8 +14,8 @@ function getElementContent(elements, editElementId){
     
     } else {
 
-        return "";
-    }
+        return null;
+    } 
 }
 
-module.exports = getElementContent;
+module.exports = getElementContent

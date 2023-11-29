@@ -2,23 +2,23 @@ let logInLogOutLink2 = document.getElementById("login-logout-link");
 
 //logInLogOutLink2.addEventListener("click", checkForLogOutCondition)
 
-logInLogOutLink2.addEventListener("click", async () => {
+// logInLogOutLink2.addEventListener("click", async () => {
 
-    await checkForLogOutCondition();
+//     await checkForLogOutCondition();
 
-});
+// });
 
-async function checkForLogOutCondition(){
+// async function checkForLogOutCondition(){
 
-    if(logInLogOutLink2.textContent === "Logout"){
+//     if(logInLogOutLink2.textContent === "Logout"){
         
-        await logOut();
+//         await logOut();
     
-    } else if (logInLogOutLink2.textContent === "Login"){
+//     } else if (logInLogOutLink2.textContent === "Login"){
 
-        document.location.replace("/login");
-    }
-}
+//         document.location.replace("/login");
+//     }
+// }
 
 async function logOut(){
 

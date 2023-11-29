@@ -3,9 +3,9 @@
         <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-comment-id="{{{comment.id}}}">
             <section class="bg-secondary d-flex justify-content-between align-items-center">
                 <h2>{{{comment.title}}}</h2>
-                <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
+                <p class="my-0 mr-2">Created by {{{user.username}}} on {{{formatDate createdAt}}}</p>
                 {{#if (equals user_id ../loggedInUserId)}}
-                    <button id="edit-delete-comment-button-{{{count @index}}}" class="bg-secondary"data-content={{{comment.id}}}>Edit or Delete!</button>
+                    <button id="edit-delete-comment-button-{{{count @index}}}" class="bg-secondary" data-content={{{comment.id}}}>Edit or Delete!</button>
                 {{/if}}
             </section>
             <p class="ml-3">{{{comment.content}}}</p>
@@ -19,7 +19,7 @@
             {{/if}}
         {{/if}}
         {{#unless loggedIn}}
-            <p> You must <a href="/login">log in</a> before adding a comment!!</p>
+            <p> You must <a href="/login?blogPostId={{{blogPost.id}}}">log in</a> before adding a comment!!</p>
         {{/unless}}
     </section>
 </section>

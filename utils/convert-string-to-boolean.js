@@ -1,13 +1,30 @@
+
+
 function convertStringToBoolean(stringInQuestion){
 
-    if(stringInQuestion === "true"){
+    if(stringInQuestion){
 
-        return true
+        let parsedString = JSON.parse(stringInQuestion);
+
+        console.log("parsed string", parsedString);
+
+        return parsedString;
     
-    } else if (stringInQuestion === "false"){
+    } else {
 
-        return false;
-    }   
+        return "";
+    } 
+
+    
+
+    // if(stringInQuestion === "true"){
+
+    //     return true
+    
+    // } else if (stringInQuestion === "false"){
+
+    //     return false;
+    // }   
 }
 
 module.exports = convertStringToBoolean;

@@ -19,12 +19,18 @@
                     <nav class="navbar navbar-expand col-3 justify-content-between">
                         <a href="/" id="home-link">Home</a>
                         <a href="/dashboard?cudPost=false" id="dashboard-link">Dashboard</a>
-                        <a id="login-logout-link">{{{loginOrLogout}}}</a>
+                        {{#if loggedInUser}}
+                            <a href="/api/users/logout" id="login-logout-link">Logout</a>
+                        {{else}}
+                            <a href="/login" id="login-logout-link">Login</a>
+                        {{/if}}
                     </nav>
                 </section>
-                <section id="welcome-bar">
+                {{#if loggedInUser}}
+                    <section id="welcome-bar">
                     <p id="welcome-line" data-user-id="{{{loggedInUserId}}}">Welcome, {{{loggedInUser}}}</p>
-                </section>
+                    </section>
+                {{/if}}
             </section>
             <section id="title-section" class="m-2 ml-4 bg-info rounded-3 col-2">
                 <h1>{{{pageTitle}}}</h1>
@@ -33,5 +39,8 @@
         <main>
             {{{body}}}
         </main>
+        <section class="d-flex col-12 justify-content-between">
+            <p id="error-message" class="text-center text-danger">{{{invalidRedirectionMessage}}}</p>
+        </section>
     </body>
 </html>

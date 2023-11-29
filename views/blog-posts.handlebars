@@ -28,10 +28,10 @@
                 <section class="bg-secondary d-flex justify-content-between align-items-center">
                     <h2>{{{title}}}</h2>
                     {{#if ( equals ../whichPage "home")}}
-                        <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
+                        <p class="my-0 mr-2">Created by {{{user.username}}} on {{{formatDate createdAt}}}</p>
                     {{/if}}
                     {{#if ( equals ../whichPage "dashboard")}}
-                        <p class="my-0 mr-2">{{{createdAt}}}</p>
+                        <p class="my-0 mr-2">{{{formatDate createdAt}}}</p>
                     {{/if}}
                 </section>
                 {{#if ( equals ../whichPage "home")}}

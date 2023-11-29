@@ -62,16 +62,23 @@ async function logIn(event){
             body: JSON.stringify(credentials)
         })
 
-        logInLogOutLink.textContent = "Logout";
+        //logInLogOutLink.textContent = "Logout";
 
         if(response.url.slice(-9) === 'dashboard'){
 
-            window.location.replace('./dashboard');
+            if(submitButton.dataset.databasePostId){
+
+                document.location.href = `/single-blog-post-and-comments/?id=${submitButton.dataset.databasePostId}&cudComment=false`;
+            
+            } else {
+
+                document.location.href = './dashboard';
+            }
         }
 
         if(response.url.slice(-5) === 'false' && response.redirected === true){
 
-            window.location.replace('/login?valid=false');
+            document.location.href = '/login?valid=false';
         }
     
     } catch (error){

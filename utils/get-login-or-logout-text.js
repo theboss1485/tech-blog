@@ -1,17 +1,17 @@
-function getLoginOrLogoutText(reqSessionLoggedIn){
+// function getLoginOrLogoutText(reqSessionLoggedIn){
 
-    let logInOrLogOut = undefined;
+//     let logInOrLogOut = undefined;
 
-    if(reqSessionLoggedIn === true){
+//     if(reqSessionLoggedIn === true){
 
-        logInOrLogOut = "Logout"
+//         logInOrLogOut = "Logout"
     
-    } else {
+//     } else {
 
-        logInOrLogOut = "Login";
-    }
+//         logInOrLogOut = "Login";
+//     }
 
-    return logInOrLogOut;
-}
+//     return logInOrLogOut;
+// }
 
-module.exports = getLoginOrLogoutText;
+// module.exports = getLoginOrLogoutText;

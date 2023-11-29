@@ -1,8 +1,8 @@
 <section id="single-post-container" class="bg-light">
-    <section id="single-blog-post" class="col-10 m-3 px-0 border" data-database-post-id="{{{blogPost.id}}}" data-user-id="{{{bloPost.user_id}}}">
+    <section id="single-blog-post" class="col-10 m-3 px-0 border" data-database-post-id="{{{blogPost.id}}}" data-user-id="{{{blogPost.user_id}}}">
         <section class="bg-secondary d-flex justify-content-between align-items-center">
             <h2>{{{blogPost.title}}}</h2>
-            <p class="my-0 mr-2">Created by {{{blogPost.user.username}}} on {{{blogPost.createdAt}}}</p>
+            <p class="my-0 mr-2">Created by {{{blogPost.user.username}}} on {{{formatDate blogPost.createdAt}}}</p>
         </section>
             <p class="ml-3">{{{blogPost.content}}}</p>
     </section>

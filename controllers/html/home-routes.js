@@ -2,24 +2,23 @@ const router = require('express').Router();
 const {User, BlogPost, Comment} = require('../../models');
 const { sequelize } = require('../../models/User.js');
 const renderBlogPosts = require('../../utils/render-blog-posts.js');
-const renderPlainElements = require('../../utils/render-blog-posts.js');
 const renderSinglePostAndComments = require('../../utils/render-single-post-and-comments.js');
-//let loggedInUser = require('activeUser');
+const {baseAuthenticateWhetherLoggedIn, loggedInAuthenticationBeforeCud } = require('../../utils/authentication.js')
 
-router.get('/users/', (req, res) =>{
+// router.get('/users/', (req, res) =>{
 
-    User.findAll().then((userData) => {
+//     User.findAll().then((userData) => {
 
-    const users = userData.map((user) => user.get({ plain: true }));
+//     const users = userData.map((user) => user.get({ plain: true }));
     
-    res.json(users);
+//     res.json(users);
 
-    }).catch((error) => {
+//     }).catch((error) => {
 
-        console.log(error);
-        res.status(400).json(error);
-    });
-});
+//         console.log(error);
+//         res.status(400).json(error);
+//     });
+// });
 
 router.get('/', async (req, res) => {
 
@@ -45,21 +44,30 @@ router.get('/login', (req, res) => {
 
     res.set('Cache-Control', 'no-store');
 
-    let loginOrLogoutText = undefined;
+    let postId = undefined;
 
-    if(req.session.logged_in === false || req.session.logged_in === undefined){
+    if(req.query.blogPostId){
 
-        loginOrLogoutText = "Login"
-    
-    } else if (req.session.logged_in === true){
+        postId = req.query.blogPostId
 
-        loginOrLogoutText = "Logout"
+    } else {
+
+        postId = "";
     }
+
+    // if (req.session.logged_in === false || req.session.logged_in === undefined){
+
+    //     loginOrLogoutText = "Login"
+    
+    // } else if (req.session.logged_in === true){
+
+    //     loginOrLogoutText = "Logout"
+    // }
     
 
         let invalidCredentials = "";
 
-        if(req.query.valid === "false"){
+        if (req.query.valid === "false"){
 
             invalidCredentials = "Your username or password is incorrect.  Please try again!";
         }
@@ -68,11 +76,12 @@ router.get('/login', (req, res) => {
 
         res.render('login-signup', {
 
+            pageTitle: "Tech Blog",
             logInOrSignUp: "Log In!",
             logInOrSignUpInstead: "Sign Up Instead",
             subtitle: "Log In",
+            postId,
             errorMessage: invalidCredentials,
-            loginOrLogout: loginOrLogoutText
         });
     
     } catch(error) {
@@ -96,6 +105,7 @@ router.get('/signup', (req, res) => {
 
         res.render('login-signup', {
 
+            pageTitle: "Tech Blog",
             logInOrSignUp: "Sign Up!",
             logInOrSignUpInstead: "Log In Instead",
             subtitle: "Sign Up",
@@ -111,7 +121,9 @@ router.get('/signup', (req, res) => {
         
 });
 
-router.get('/single-blog-post-and-comments', async (req, res) => {
+router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, async (req, res) => {
+
+    res.set('Cache-Control', 'no-store');
 
     let error = "";
     
@@ -243,22 +255,16 @@ router.get('/single-blog-post-and-comments', async (req, res) => {
 //     });
 // });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
     try{
-
-        if(req.session.logged_in === false ||req.session.logged_in === undefined ){
-
-            res.redirect('/login');
-        
-        } else {
 
             let error = "";
 
             if(req.query.error === "invalidPostSubmission"){
 
                 error = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
-                        and can't start with those characters or end with ':' or '-'.  Try again'`
+                         and can't start with those characters or end with ':' or '-'.  Try again'`
             }
 
             //console.log("req.session.user_id 2", req.session.user_id);
@@ -293,9 +299,8 @@ router.get('/dashboard', async (req, res) => {
             //                             "dashboard", req.query.cudPost, req.query.newElement, errorMessage, req.query.postId);
             //     }
             // }
-        }
 
-    } catch {
+    } catch(error) {
 
         console.log(error);
         res.status(400).json(error);
@@ -304,53 +309,53 @@ router.get('/dashboard', async (req, res) => {
     
 });
 
-router.get('/comments', async (req, res) => {
+// router.get('/comments', async (req, res) => {
 
-    let commentData = await Comment.findAll({
+//     let commentData = await Comment.findAll({
 
-        include: [
-            {
-                model: User,
-                where: {
+//         include: [
+//             {
+//                 model: User,
+//                 where: {
 
-                    id: sequelize.col('comment.user_id')
-                }
-            }
+//                     id: sequelize.col('comment.user_id')
+//                 }
+//             }
 
-        ], 
+//         ], 
 
-        where: {
+//         where: {
 
-            blog_post_id: req.query.post
-        }
-    });
+//             blog_post_id: req.query.post
+//         }
+//     });
 
-    try{
+//     try{
 
-        renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A");
+//         renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A");
     
-    } catch {
+//     } catch {
 
-        console.log(error);
-        res.status(400).json(error);
-    }
+//         console.log(error);
+//         res.status(400).json(error);
+//     }
     
-});
+// });
 
-function renderLoggedInVariable(req){
+// function renderLoggedInVariable(req){
 
-    let loggedIn = undefined;
+//     let loggedIn = undefined;
 
-    if(req.session.logged_in === true){
+//     if(req.session.logged_in === true){
 
-        loggedIn = "true";
+//         loggedIn = "true";
     
-    } else if (req.session.logged_in === false || req.session.logged_in === undefined){
+//     } else if (req.session.logged_in === false || req.session.logged_in === undefined){
 
-        loggedIn = "false";
-    }
+//         loggedIn = "false";
+//     }
 
-    return loggedIn;
-}
+//     return loggedIn;
+// }
 
 module.exports = router;

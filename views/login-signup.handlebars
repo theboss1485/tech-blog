@@ -7,7 +7,7 @@
         <input type="text" id="username" class="col-9 d-block ml-2">
         <label for="password"class="d-block mt-2 ml-2">Password:</label>
         <input type="password" id="password" class="col-9 d-block  ml-2">
-        <button id="log-in-sign-up-button" class="col-9 ml-2 mt-2">{{{logInOrSignUp}}}</button>
+        <button id="log-in-sign-up-button" class="col-9 ml-2 mt-2" data-database-post-id="{{{postId}}}">{{{logInOrSignUp}}}</button>
         {{#if ( equals logInOrSignUp "Log In!")}}
             <a href="/signup" id="log-in-or-sign-up-instead"class="d-block ml-2 mt-2">{{{logInOrSignUpInstead}}}</a>
         {{/if}}

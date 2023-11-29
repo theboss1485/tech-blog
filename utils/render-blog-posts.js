@@ -1,30 +1,44 @@
 const getElementContent = require('./get-element-content.js');
-const getLoginOrLogoutText = require('./get-login-or-logout-text.js');
+//const getLoginOrLogoutText = require('./get-login-or-logout-text.js');
 const getCudFormTitle = require('./get-cud-form-title.js');
 const convertStringToBoolean = require('./convert-string-to-boolean.js')
 
 function renderBlogPosts(blogPosts, req, res, pageTitle, whichPage, error = ""){
 
-    let loginOrLogout = getLoginOrLogoutText(req.session.logged_in);
+    //let loginOrLogout = getLoginOrLogoutText(req.session.logged_in);
 
-    let cudFormTitle = getCudFormTitle(req.query.newElement, "Comment");
+    let cudFormTitle = getCudFormTitle(req.query.newElement, "Blog Post");
 
-    
+    let elementToBeEdited = undefined;
 
-    if(req.query.newElement === "true"){
+    if (req.query.editPostId){
 
-        cudFormTitle = "Add a Blog Post";
-    
-    } else if(req.query.newElement === "false"){
+        elementToBeEdited = getElementContent(res, blogPosts, req.query.editPostId);
 
-        cudFormTitle = "Edit or Delete a Blog Post";
-        
+        if (!elementToBeEdited) {
+
+            res.redirect("/?error=invalidRedirection");
+            return;
+        }
     }
-
-    elementToBeEdited = getElementContent(blogPosts, req.query.editPostId);
 
     let displayCudForm = convertStringToBoolean(req.query.cudPost);
     let newElement = convertStringToBoolean(req.query.newElement);
+
+    let invalidRedirectionMessage = false
+
+    console.log("req.query.error", req.query.error);
+
+    if (req.query.error === "invalidRedirection"){
+
+        invalidRedirectionMessage = "You have attempted an invalid redirection.  This isn't allowed."
+    
+    } else {
+
+        invalidRedirectionMessage = "";
+    }
+
+    console.log("invalid redirection message", invalidRedirectionMessage);
 
     res.render("blog-posts", {
         blogPosts,
@@ -32,8 +46,8 @@ function renderBlogPosts(blogPosts, req, res, pageTitle, whichPage, error = ""){
         whichPage,
         cudFormTitle,
         elementToBeEdited,
-        loginOrLogout,
         error,
+        invalidRedirectionMessage,
         type: "Blog Post",
         loggedIn: req.session.logged_in,
         loggedInUserId: req.session.user_id,

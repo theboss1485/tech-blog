@@ -68,10 +68,15 @@ router.get('/logout', async (req, res) => {
 
     if(req.session.logged_in === true){
 
-        req.session.destroy(() => {
+        try{
 
+            await sessionDestroyWithPromise(req);
             res.redirect(301, '../../login');
-        })
+        
+        } catch {
+
+            res.status(500).json(error);
+        }
 
         //await sessionDestroyWithPromise(req);
     
