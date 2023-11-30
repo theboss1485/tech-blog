@@ -1,5 +1,3 @@
-// const { BlogPost } = require("../../models");
-// const { update } = require("../../models/User");
 
 let createButton = document.getElementById("create-button");
 let updateButton = document.getElementById("update-button");
@@ -11,6 +9,8 @@ let content = document.getElementById("content");
 let singleBlogPost = document.getElementById("single-blog-post");
 let welcomeLine = document.getElementById("welcome-line");
 
+/* The following outer if statements add event listeners to the create, update
+and delete buttons for creating, updating, and deleting blog posts and comments.*/
 if (createButton !== null){
 
     createButton.addEventListener("click", () => {
@@ -57,7 +57,7 @@ if (deleteButton !== null){
 }
 
 
-
+/* This function sends POST requests to the server to create comments and blog posts. */
 async function createElement(elementType){
 
     if(performValidation(elementType) === true){
@@ -81,6 +81,9 @@ async function createElement(elementType){
 
             console.log(error)
         }
+
+    /* If the user makes an invalid submission, the system redirects the user so that an error 
+    message can be rendered. */
     } else {
 
         if(elementType === "comment"){
@@ -94,6 +97,7 @@ async function createElement(elementType){
     }
 }
 
+/* This function sends UPDATE requests to the server to update comments and blog posts. */
 async function updateElement(event, elementType){
 
     if(performValidation(elementType) === true){
@@ -119,6 +123,9 @@ async function updateElement(event, elementType){
 
             console.log(error)
         }
+
+    /* If the user makes an invalid submission, the system redirects the user so that an error 
+    message can be rendered. */
     } else {
 
         if (elementType === "comment"){
@@ -133,6 +140,7 @@ async function updateElement(event, elementType){
     }
 }
 
+/* This function sends DELETE requests to the server to update comments and blog posts. */
 async function deleteElement(event, elementType){
 
     let requestUrl = generateUrlPiece(elementType);
@@ -148,8 +156,6 @@ async function deleteElement(event, elementType){
         });
 
         handleRedirection(elementType);
-        
-        //document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
     
     } catch(error){
 
@@ -157,6 +163,9 @@ async function deleteElement(event, elementType){
     }
 }
 
+
+/* This function generates part of the fetch URL so that the code to generate that part
+doesn't need to repeated three times. */
 function generateUrlPiece(elementType){
 
     if(elementType === "blog post"){
@@ -169,6 +178,8 @@ function generateUrlPiece(elementType){
     }
 }
 
+/* This function generates the fetch request body so that the code to generate the body
+doesn't need to repeated three times. */
 function generateBody(elementType){
 
     let body = undefined;
@@ -189,6 +200,8 @@ function generateBody(elementType){
     return body;
 }
 
+/* This function handles redirection if a fetch request is valid so that the code to handle redirection
+doesn't need to repeated three times. */
 function handleRedirection(elementType){
 
     if(elementType === "blog post"){
@@ -201,6 +214,8 @@ function handleRedirection(elementType){
     }
 }
 
+/* This function performs validation on the Title and Content fields for blog posts and comments,
+so as to make sure the user gave valid input. */
 function performValidation(elementType){
 
     let titleRegex = /^[a-zA-Z0-9 ][a-zA-Z0-9-:!? ]*[a-zA-Z0-9!? ]?$/

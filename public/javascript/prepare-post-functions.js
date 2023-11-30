@@ -1,3 +1,6 @@
+/* This file adds event listeners to the blog posts on the home page and dashboard.  It also adds
+an event listener to the button for creating a new blog post on the dashboard. It also includes
+a function to open the comment editor.*/
 let postFunctionsScript = document.getElementById("post-functions-script");
 let whichPage = postFunctionsScript.dataset.whichPage;
 
@@ -9,29 +12,31 @@ let createPostButton = document.getElementById("new-post-button");
 
 let individualPosts = postsSection.children;
 
+
 for(let counter = 0; counter < individualPosts.length - 1; counter++){
 
-    if(individualPosts[counter].id !=="create-update-delete-post"){
+    if(individualPosts[counter].tagName !== "button"){
 
-        individualPosts[counter].addEventListener("click", async (event) => {
+        if(individualPosts[counter].id !=="create-update-delete-post"){
+
+            individualPosts[counter].addEventListener("click", async (event) => {
+            
         
-            // window.location.href =`/comments?post=${event.currentTarget.dataset.databasePostId}`;
-    
-            if(whichPage === "home"){
-    
-                document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}&cudComment=false`;
-            
-            } else if (whichPage === "dashboard"){
-    
-                openPostEditor("false", event)
-            }
-    
-            
-        });
+                if (whichPage === "home"){
+        
+                    document.location.href =`/single-blog-post-and-comments/?id=${event.currentTarget.dataset.databasePostId}&cudComment=false`;
+                
+                } else if (whichPage === "dashboard"){
+        
+                    openPostEditor("false", event)
+                }
+        
+            });
+        }
     }
 }
 
-if(createPostButton !== undefined && createPostButton !== null){
+if (createPostButton !== undefined && createPostButton !== null){
 
     createPostButton.addEventListener("click", (event) => {
 
@@ -39,7 +44,7 @@ if(createPostButton !== undefined && createPostButton !== null){
     });
 }
 
-
+/* This function opens the blog post editor/creator. */
 async function openPostEditor(newElement, event){
 
     if(createPostButton !== undefined && createPostButton !== null){
@@ -50,14 +55,12 @@ async function openPostEditor(newElement, event){
         }
     }
 
-    if(newElement === "true"){
+    if (newElement === "true"){
 
         document.location.href =`/dashboard?cudPost=true&newElement=${newElement}`;
 
-    } else if(newElement === "false"){
+    } else if (newElement === "false"){
 
         document.location.href =`/dashboard/?cudPost=true&newElement=${newElement}&editPostId=${event.currentTarget.dataset.databasePostId}`;
-    }
-
-    
+    }  
 }

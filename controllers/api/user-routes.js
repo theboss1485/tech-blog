@@ -4,19 +4,27 @@ const {sessionSaveWithPromise, sessionDestroyWithPromise} = require('../../utils
 const bcrypt = require('bcrypt');
 
 
-router.get('/', (req, res) =>{
 
-    User.findAll().then((userData) => {
+/*This GET route gets all the users.*/
+router.get('/', async (req, res) =>{
 
-        res.json(userData);
+    try{
 
-    }).catch((error) => {
+        let userData = await User.findAll();
 
+        res.status(200).json(userData);
+
+    } catch(error) {
+    
         console.log(error);
-        res.status(400).json(error);
-    });
+        res.status(500).json(error);
+    }
 });
 
+    
+
+/* This POST route creates a new user if it doesn't find an existing one 
+with the same username. */
 router.post('/', async (req, res) =>{
 
     try{
@@ -48,6 +56,9 @@ router.post('/', async (req, res) =>{
     
             res.redirect(301, `../../dashboard`);
         
+        /* If there is an existing user with the username in question
+        the system redirects the user to the Sign Up page and renders
+        an error message.*/
         } else {
 
             res.redirect(301, `/signup?taken=true`);
@@ -56,12 +67,13 @@ router.post('/', async (req, res) =>{
     } catch(error){
 
         console.log(error);
-        res.status(400).json(error);
+        res.status(500).json(error);
     }
 });
 
 /* I copied this code from the solved mini project of Module 14.  I really don't know any
-way to do this other than changing the variable names.*/
+way to do this other than changing the variable names.  This route logs the 
+user out and calls a method that destroys the session.*/
 router.get('/logout', async (req, res) => {
 
     res.set('Cache-Control', 'no-store');
@@ -77,17 +89,12 @@ router.get('/logout', async (req, res) => {
 
             res.status(500).json(error);
         }
-
-        //await sessionDestroyWithPromise(req);
-    
     }
-
-    // console.log("test1");
-
-    
-    // console.log("test2");
 });
 
+/* This POST route logs the user in if their credentials are correct.
+It then redirects them to the dashboard page.  If the credentials aren't correct
+the system redirects the user to the Log In page and displays an error message. */
 router.post('/login', async (req, res) =>{
 
     res.set('Cache-Control', 'no-store');
@@ -102,10 +109,6 @@ router.post('/login', async (req, res) =>{
             }
         });
 
-        
-
-        
-
         let validUser = undefined;
         let validPassword = undefined;
 
@@ -117,9 +120,6 @@ router.post('/login', async (req, res) =>{
         }
 
         if (validPassword !== undefined){
-
-
-            
 
             req.session.user_id = validUser.id
             req.session.logged_in = true;

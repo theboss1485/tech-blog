@@ -1,3 +1,4 @@
+/* This function implements promises for the saving of the session. */
 async function sessionSaveWithPromise(req){
 
     return new Promise((resolve, reject) => {
@@ -16,6 +17,8 @@ async function sessionSaveWithPromise(req){
     })
 }
 
+/* This function implements promises for the destruction of the session 
+when the user logs out. */
 async function sessionDestroyWithPromise(req){
 
     return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
+
+// This connection allows the server-side javaScript to connect to the database.
 const Sequelize = require('sequelize');
 require('dotenv').config();
-
-
 
 const sequelize = new Sequelize(
 

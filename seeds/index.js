@@ -1,4 +1,4 @@
-// I took code to seed the database from activity 7 of module 14.
+// This file seeds the database.  I took most of the code to seed the database from activity 7 of module 14.
 
 const sequelize = require('../config/connection');
 const User = require('../models/User');
@@ -39,6 +39,7 @@ const seedDatabase = async () => {
 };
 
 try{
+
     seedDatabase();
 
 } catch(error){
@@ -46,6 +47,8 @@ try{
     console.log(error)
 }
 
+/* This function hashes the user seed passwords.  I didn't hide the user seed passwords 
+with environment variables, but I did hash them here.*/
 function hashUserPasswords(userData){
 
     for(let counter = 0; counter < userData.length; counter++){

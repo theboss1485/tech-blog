@@ -1,3 +1,6 @@
+/* I chose to use BootStrap where I could for CSS styling,
+but sometimes it wasn't quite enough.  Therefore, I have put additional 
+CSS here. */
 .background {
 
     background-color: darkturquoise;
@@ -23,8 +26,8 @@
     font-size: 1.5em;
 }
 
-
 .post-title-background {
+
     background: linear-gradient(to bottom, #0095ff, #009dff 50%, #00aeff);
 }
 
@@ -35,6 +38,7 @@
 }
 
 .text-field-background {
+
     background-color: rgb(22, 158, 221);
 }
 
@@ -51,6 +55,6 @@
 
 #log-in-or-sign-up-instead:hover {
 
-    cursor:pointer;
     color: darkred;
+    cursor:pointer;
 }

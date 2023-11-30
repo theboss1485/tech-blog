@@ -15,6 +15,8 @@ function baseAuthenticateWhetherLoggedIn(req, res, next){
 
 }
 
+/* This function ensures that if the user tries to access the comment 
+editor while logged out, he or she will be redirected to the Log In page. */
 function loggedInAuthenticationBeforeCud(req, res, next){
 
     if (req.query.cudComment){

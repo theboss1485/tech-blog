@@ -1,3 +1,5 @@
+{{!-- This handlebars view generates the single blog post and calls the 'comment' partial on the single-blog-post-and-comments page. also
+calls the appropriate partial if a comment needs to be updated or deleted.--}}
 <section id="single-post-container" class="background d-flex align-items-center flex-column">
     <section id="single-blog-post" class="col-11 m-3 px-0 post-border rounded" data-database-post-id="{{{blogPost.id}}}" data-user-id="{{{blogPost.user_id}}}">
         <section class="d-flex justify-content-between align-items-center px-3 py-1 background post-title-background">

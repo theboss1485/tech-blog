@@ -1,15 +1,13 @@
 const getElementContent = require('./get-element-content.js');
-//const getLoginOrLogoutText = require('./get-login-or-logout-text.js');
 const getCudFormTitle = require('./get-cud-form-title.js')
 const convertStringToBoolean = require('./convert-string-to-boolean.js');
 
+/*  This function renders the single blog post and comments on the 
+single-blog-post-and-comments page.*/
 function renderSinglePostAndComments(comments, blogPost, req, res, error){
-
-    //let loginOrLogout = getLoginOrLogoutText(req.session.logged_in);
 
     let cudFormTitle = getCudFormTitle(req.query.newElement, "Comment");
 
-    
     let elementToBeEdited = undefined
 
     if(req.query.editCommentId){
@@ -22,8 +20,6 @@ function renderSinglePostAndComments(comments, blogPost, req, res, error){
             return;
         }
     }
-
-    console.log("Edited!", elementToBeEdited);
 
     let displayCudForm = convertStringToBoolean(req.query.cudComment);
     let newElement = convertStringToBoolean(req.query.newElement);

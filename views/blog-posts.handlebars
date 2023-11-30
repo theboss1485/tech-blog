@@ -1,24 +1,5 @@
-{{!-- <section id="posts-section" class="bg-light">
-
-    <h2>{{{loggedIn}}}</h2>
-    {{#each blogPosts as |post|}}
-        <section id="{{{generateUuid}}}" class="col-10 m-3 px-0 border" data-database-post-id="{{{post.id}}}">
-            <section class="bg-secondary d-flex justify-content-between align-items-center">
-                <h2>{{{loggedIn}}}</h2>
-                <p class="my-0 mr-2">Created by {{{user.username}}} on {{{createdAt}}}</p>
-            </section>
-            <p class="ml-3">{{{content}}}</p>
-        </section>
-    {{/each}}
-
-    <section class="d-flex align-items-center justify-content-around">
-        {{#if ( equals loggedIn "true")}}
-            <button id="new-post-button" class="bg-secondary">+ New Post</button>
-        {{/if}}
-    </section>
-</section>
-<script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" data-which-page="{{{loggedIn}}}" defer></script> --}}
-
+{{!-- This handlebars view generates the blog posts and blog post titles on the home page and dashboard, respectively.
+If there is a blog post that needs to be created, updated, or deleted, this view calls the partial that does that.--}}
 <section id="posts-section" class="background d-flex align-items-center flex-column">
     {{#if displayCudForm}}
             {{> create-update-delete}}

@@ -5,21 +5,7 @@ const renderBlogPosts = require('../../utils/render-blog-posts.js');
 const renderSinglePostAndComments = require('../../utils/render-single-post-and-comments.js');
 const {baseAuthenticateWhetherLoggedIn, loggedInAuthenticationBeforeCud } = require('../../utils/authentication.js')
 
-// router.get('/users/', (req, res) =>{
-
-//     User.findAll().then((userData) => {
-
-//     const users = userData.map((user) => user.get({ plain: true }));
-    
-//     res.json(users);
-
-//     }).catch((error) => {
-
-//         console.log(error);
-//         res.status(400).json(error);
-//     });
-// });
-
+// This GET route gets the home page and renders the current blog posts.
 router.get('/', async (req, res) => {
 
     try{
@@ -39,7 +25,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-
+// This GET route gets the Log In page.
 router.get('/login', (req, res) => {
 
     res.set('Cache-Control', 'no-store');
@@ -54,16 +40,6 @@ router.get('/login', (req, res) => {
 
         postId = "";
     }
-
-    // if (req.session.logged_in === false || req.session.logged_in === undefined){
-
-    //     loginOrLogoutText = "Login"
-    
-    // } else if (req.session.logged_in === true){
-
-    //     loginOrLogoutText = "Logout"
-    // }
-    
 
         let invalidCredentials = "";
 
@@ -92,6 +68,7 @@ router.get('/login', (req, res) => {
         
 });
 
+// This GET route gets the Sign Up page.
 router.get('/signup', (req, res) => {
 
     let invalidCredentials = "";
@@ -121,6 +98,8 @@ router.get('/signup', (req, res) => {
         
 });
 
+/* When a user clicks a blog post on the home page, this route is called. It renders the blog post
+that was clicked, plus any comments belonging to it.*/
 router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, async (req, res) => {
 
     res.set('Cache-Control', 'no-store');
@@ -134,51 +113,46 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
     try{
 
-        let blogPostData = await BlogPost.findOne({
-        
-        include: [
+        let blogPostData = await BlogPost.findOne(
+            
             {
-                model: User
+                include: [
+                    {
+                        model: User
+                    }
+                ],
+
+                where: {
+
+                    id: req.query.id
+                }
             }
-        ],
-
-        where: {
-
-            id: req.query.id
-        }
-        });
+        );
 
         let blogPost = blogPostData.get({plain: true});
 
-        let commentData = await Comment.findAll({
-
-        include: [
+        let commentData = await Comment.findAll(
+            
             {
-                model: User,
+                include: [
+                    {
+                        model: User,
+                        where: {
+
+                            id: sequelize.col('comment.user_id')
+                        }
+                    }
+
+                ], 
+
                 where: {
 
-                    id: sequelize.col('comment.user_id')
+                    blog_post_id: req.query.id
                 }
             }
-
-        ], 
-
-        where: {
-
-            blog_post_id: req.query.id
-        }
-        });
+        );
 
         let comments = commentData.map((comment) => comment.get({ plain: true }));
-
-        // console.log("blog post", blogPost);
-
-        // let editCommentId = "";
-
-        // if(req.query.editCommentId !== null && req.query.editCommentId !== undefined){
-
-        //     editCommentId = req.query.editCommentId
-        // }
 
         renderSinglePostAndComments(comments, blogPost, req, res, error);
 
@@ -189,173 +163,41 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
     }
 });
 
-// router.get('/cud-post', async (req, res) => {
-
-//     try{
-
-//         res.render('create-update-delete', {
-
-//             newPost: "true",
-//             postPageTitle: "Create New Post",
-    
-//         });
-
-//     } catch{
-
-//         console.log(error);
-//         res.status(400).json(error);
-//     }
-
-    
-// });
-
-// router.get('/cud-post/:id', async (req, res) =>{
-
-//     let blogPostData = await BlogPost.findOne({
-
-//         where: {
-
-//             user_id: req.params.id
-//         }
-//     })
-
-//     let blogPost = blogPostData.get({plain: true});
-
-//     if(req.query.newPost === "true"){
-
-//         res.render('create-update-delete', {
-
-//             newPost: "false",
-//             postPageTitle: "Edit or Delete Post",
-//         });
-        
-    
-//     } else if(req.query.newPost === "false"){
-
-//         res.render('create-update-delete', {
-
-//             newPost: "false",
-//             postPageTitle: "Edit or Delete Post",
-//             blogPostTitle: blogPost.title,
-//             blogPostContents: blogPost.contents
-//         });
-//     }
-// });
-
-// router.get('/blogPosts/:id', (req, res) => {
-
-//     BlogPost.findByPk(req.params.id, {include: User}).then((blogPostData) => {
-
-//         renderBlogPostData(blogPostData, res);
-        
-//     }).catch((error) => {
-
-//         console.log(error);
-//         res.status(400).json(error);
-//     });
-// });
-
+/* This GET route gets the dashboard page and renders the blog posts there.  If the user
+makes an invalid blog post submission, it assists with rendering an error message*/
 router.get('/dashboard', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
-    try{
+    try {
 
-            let error = "";
+        let error = "";
 
-            if(req.query.error === "invalidPostSubmission"){
+        if(req.query.error === "invalidPostSubmission"){
 
-                error = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
-                         and can't start with those characters or end with ':' or '-'.  Try again'`
+            error = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
+                     and can't start with those characters or end with ':' or '-'.  Try again'`
+        }
+
+        let blogPostData = await BlogPost.findAll(
+
+            {
+
+                where: {
+
+                    user_id: req.session.user_id
+                }
+
             }
+        );
 
-            //console.log("req.session.user_id 2", req.session.user_id);
+        let blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
 
-            let blogPostData = await BlogPost.findAll({
-
-            where: {
-
-                user_id: req.session.user_id
-            }
-
-            });
-
-            let blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
-
-
-            renderBlogPosts(blogPosts, req, res, "Your Dashboard", "dashboard", error)
-
-            // if(req.query.cudPost !== "true"){
-
-            //     renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard");
-            
-            // } else {
-
-            //     if(req.query.newElement === "true"){
-
-            //         renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), "dashboard", req.query.cudPost, req.query.newElement, errorMessage, "");
-
-            //     } else {
-
-            //         renderPlainElements(blogPostData, "blog-post", req, res, "Your Dashboard", renderLoggedInVariable(req), 
-            //                             "dashboard", req.query.cudPost, req.query.newElement, errorMessage, req.query.postId);
-            //     }
-            // }
+        renderBlogPosts(blogPosts, req, res, "Your Dashboard", "dashboard", error);
 
     } catch(error) {
 
         console.log(error);
         res.status(400).json(error);
-    }
-
-    
+    }    
 });
-
-// router.get('/comments', async (req, res) => {
-
-//     let commentData = await Comment.findAll({
-
-//         include: [
-//             {
-//                 model: User,
-//                 where: {
-
-//                     id: sequelize.col('comment.user_id')
-//                 }
-//             }
-
-//         ], 
-
-//         where: {
-
-//             blog_post_id: req.query.post
-//         }
-//     });
-
-//     try{
-
-//         renderPlainElements(commentData, "comment", req, res, "Tech Blog", renderLoggedInVariable(req), "N/A");
-    
-//     } catch {
-
-//         console.log(error);
-//         res.status(400).json(error);
-//     }
-    
-// });
-
-// function renderLoggedInVariable(req){
-
-//     let loggedIn = undefined;
-
-//     if(req.session.logged_in === true){
-
-//         loggedIn = "true";
-    
-//     } else if (req.session.logged_in === false || req.session.logged_in === undefined){
-
-//         loggedIn = "false";
-//     }
-
-//     return loggedIn;
-// }
 
 module.exports = router;

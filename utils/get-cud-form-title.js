@@ -1,20 +1,14 @@
+/* The function gets the appropriate title for the form to create, update, and delete 
+comments and blog posts.*/
 function getCudFormTitle(newElement, elementType){
 
-    console.log("inside 222222222222");
-
     let newElementBoolean = undefined;
-
-    console.log("New Element", newElement);
     
     if(newElement){
 
          newElementBoolean = JSON.parse(newElement);
     }
 
-    console.log("Element Type", elementType);
-
-    console.log("New Element Boolean", newElementBoolean);
-    
     let cudFormTitle = undefined;
 
     if((newElementBoolean) && (elementType === "Comment")){

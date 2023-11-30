@@ -1,78 +1,114 @@
 const router = require('express').Router();
-const {User, BlogPost} = require('../../models');
-const renderPlainElements = require('../../utils/render-blog-posts.js');
+const {BlogPost} = require('../../models');
 
 
-router.get('/:id', async (req, res) => {
+// router.get('/:id', async (req, res) => {
 
-    // let userData = User.findOne({
+//     let userBlogPostData = await BlogPost.findAll({
+
+//         where: {
+
+//             user_id: req.params.id
+//         }
+//     })
+// });
+
+
+// This POST route creates a blog post and sends it to the database.
+router.post('/', async (req, res) => {
+
+    if(req.session.logged_in){
+
+        try{
+
+            let blogPost = await BlogPost.create(
+                
+                {
+                    title: req.body.title,
+                    content: req.body.content,
+                    user_id: req.session.user_id
+                }
+            );
+
+            res.status(200).json(blogPost);
         
+        } catch (error){
 
-    //     where: {
-
-    //         username: req.params.username
-    //     }
-    // })
-
-    // let userInQuestion = userData.get({plain: true});
-
-
-    let userBlogPostData = await BlogPost.findAll({
-
-        where: {
-
-            user_id: req.params.id
+            console.log(error);
+            res.status(500).json(error);
         }
-    })
+    
+    } else {
 
-
-    //renderPlainElements(userBlogPostData, "blog-post", req, res, "Your Dashboard", loggedIn, "dashboard");
+        res.status(301).redirect('../../login')
+    } 
 });
 
-router.post('/', (req, res) => {
+// This PUT route updates a blog post by its ID.
+router.put('/:id', async (req, res) => {
 
-    BlogPost.create({
+    if(req.session.logged_in){
 
-        title: req.body.title,
-        content: req.body.content,
-        user_id: req.session.user_id
-    
-    }).then((blogPost) => {
+        try {
 
-        res.status(200).json(blogPost);
-    
-    }).catch((error) => {
-
-        console.log(error);
-        res.status(400).json(error);
-    });
-});
-
-router.put('/:id', (req, res) => {
-
-    BlogPost.update(
+            let update = await BlogPost.update(
+            
+                {
+                    title: req.body.title,
+                    content: req.body.content
+                },
+                {
+                    where: {
         
-        {
-            title: req.body.title,
-            content: req.body.content
-        },
-        {
-            where: {
+                        id: req.params.id,
+                    }
+                }
+            )
 
-                id: req.params.id,
-            }
+            res.status(200).json(update);
+
+        } catch(error) {
+
+            console.log(error);
+            res.status(500).json(error);
         }
 
-    ).then((update) => {
+    } else {
 
-        res.status(200).json(update);
+        res.status(301).redirect('../../login')
+    } 
     
-    }).catch((error) => {
-
-        console.log(error);
-        res.status(400).json(error);
-    });
 });
+
+// This DELETE route deletes a blog post by its ID.
+// router.delete('/:id', async (req, res) => {
+
+//     if(req.session.logged_in){
+//         try {
+
+//             let deletion = await BlogPost.destroy(
+                
+//                 {
+//                     where: {
+            
+//                         id: req.params.id
+//                     }
+//                 }
+//             )
+
+//             res.status(200).json(deletion);
+    
+//         } catch(error) {
+
+//             console.log(error);
+//             res.status(500).json(error);
+//         }
+    
+//     } else {
+
+//         res.status(301).redirect('../../login')
+//     }
+// });
 
 router.delete('/:id', (req, res) => {
 
@@ -93,5 +129,7 @@ router.delete('/:id', (req, res) => {
         res.status(400).json(error);
     });
 });
+
+
 
 module.exports = router;

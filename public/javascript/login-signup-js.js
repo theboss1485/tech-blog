@@ -13,6 +13,8 @@ submitButton.addEventListener("click", (event) => {
     }
 })
 
+/* When the user clicks the Sign Up button on the Sign Up page, this function sends
+a POST request to create a user and then redirects the user to the appropriate page. */
 async function signUp(event){
 
     event.preventDefault()
@@ -40,7 +42,8 @@ async function signUp(event){
     }
 }
 
-
+/* When the user clicks the Log In button on the Log In page, this function sends
+a POST request to log the user in and then redirects the user to the appropriate page. */
 async function logIn(event){
 
     event.preventDefault()
@@ -61,8 +64,6 @@ async function logIn(event){
             }, 
             body: JSON.stringify(credentials)
         })
-
-        //logInLogOutLink.textContent = "Logout";
 
         if(response.url.slice(-9) === 'dashboard'){
 
