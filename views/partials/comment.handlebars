@@ -1,0 +1,23 @@
+{{!-- This handlebars partial generates the comments on the  single-blog-post-and-comments page.--}}
+<section id="comments-section" class="background d-flex align-items-center flex-column">
+    {{#each comments as |comment|}}
+        <section id="{{{generateUuid}}}" class="col-9 m-3 px-0 post-border rounded" data-database-comment-id="{{{comment.id}}}">
+            <section class="heading-button-background d-flex justify-content-around">
+                <p class="my-0 mr-2 py-1 medium-text">Comment by <b>{{{user.username}}}</b> on {{{formatDate createdAt}}}</p>
+            </section>
+            <p class="ml-3 mt-2 medium-text">{{{comment.content}}}</p>
+            {{#if (equals user_id ../loggedInUserId)}}
+                <section class="d-flex justify-content-around">
+                    <button id="edit-delete-comment-button-{{{count @index}}}" class="comment-button mb-2" data-content={{{comment.id}}}>Edit or Delete!</button>
+                </section>
+            {{/if}}
+        </section>
+    {{/each}}
+
+    <section class="d-flex align-items-center justify-content-around">
+        {{#unless loggedIn}}
+            <p class="medium-text"> You must <a href="/login?blogPostId={{{blogPost.id}}}"><b>log in</b></a> before adding a comment!!</p>
+        {{/unless}}
+    </section>
+</section>
+<script id="comment-post-functions-script" src="/javascript/prepare-comment-functions.js" defer></script>

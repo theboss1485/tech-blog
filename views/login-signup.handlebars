@@ -1,0 +1,26 @@
+{{!-- This handlebars view generates the Log In and Sign Up forms on their respective pages. --}}
+<section id="login-signup-section bg-light" class="background d-flex align-items-center flex-column rounded">
+    <section id="post-1" class="col-8 m-3 px-0 post-border">
+        <section class="heading-button-background px-3 py-1">
+            <h2>{{{subtitle}}}</h2>
+        </section>
+        <section class="background d-flex align-items-center flex-column">
+            <label for="username" class="d-block ml-2 medium-text">Username:</label>
+            <input type="text" id="username" class="col-9 d-block ml-2 heading-button-background medium-text">
+            <label for="password"class="d-block mt-2 ml-2 medium-text">Password:</label>
+            <input type="password" id="password" class="col-9 d-block ml-2 heading-button-background medium-text">
+            <button id="log-in-sign-up-button" class="col-9 ml-2 mt-2 heading-button-background medium-text" data-database-post-id="{{{postId}}}">{{{logInOrSignUp}}}</button>
+            <section>
+                {{#if ( equals logInOrSignUp "Log In!")}}
+                    <a href="/signup" id="log-in-or-sign-up-instead"class="d-block ml-2 mt-2 medium-text">{{{logInOrSignUpInstead}}}</a>
+                {{/if}}
+
+                {{#if ( equals logInOrSignUp "Sign Up!")}}
+                    <a href="/login" id="log-in-or-sign-up-instead" class="d-block ml-2 mt-2 medium-text">{{{logInOrSignUpInstead}}}</a>
+                {{/if}}
+            </section>
+        </section>
+        <p id="error-message" class="text-center text-danger medium-text">{{{errorMessage}}}</p>
+    </section>
+</section>
+<script src="/javascript/login-signup-js.js"></script>

@@ -1,0 +1,6 @@
+# This makes GitHub ignore certain files that shouldn't
+# be backed up on GitHub. 
+node_modules
+.env
+.DS_Store
+package-lock.json

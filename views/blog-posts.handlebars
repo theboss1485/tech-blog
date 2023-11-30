@@ -1,0 +1,36 @@
+{{!-- This handlebars view generates the blog posts and blog post titles on the home page and dashboard, respectively.
+If there is a blog post that needs to be created, updated, or deleted, this view calls the partial that does that.--}}
+<section id="posts-section" class="background d-flex align-items-center flex-column">
+    {{#if displayCudForm}}
+            {{> create-update-delete}}
+    {{else}}
+        {{#each blogPosts as |post|}}
+            <section id="{{{generateUuid}}}" class="col-11 m-3 px-0 post-border pointer-brightness rounded" data-database-post-id="{{{post.id}}}">
+                <section class="heading-button-background d-flex justify-content-between align-items-center">
+                    <h2 class="m-2">{{{title}}}</h2>
+                    {{#if ( equals ../whichPage "home")}}
+                        <p class="my-0 mr-2 medium-text">Created by <b>{{{user.username}}}</b> on {{{formatDate createdAt}}}</p>
+                    {{/if}}
+                    {{#if ( equals ../whichPage "dashboard")}}
+                        <p class="my-0 mr-2 medium-text">{{{formatDate createdAt}}}</p>
+                    {{/if}}
+                </section>
+                {{#if ( equals ../whichPage "home")}}
+                    <p class="ml-3 mt-2 medium-text">{{{content}}}</p>
+                {{/if}}
+            </section>
+        {{/each}}
+
+        {{#if (equals whichPage "dashboard")}}
+        <section class="d-flex align-items-center justify-content-around">
+            {{#unless displayCudForm}}
+                <button id="new-post-button" class="heading-button-background">+ New Post</button>
+            {{/unless}}
+        </section>
+        {{/if}}
+    {{/if}}
+</section>
+<script id="post-functions-script" src="/javascript/prepare-post-functions.js" data-which-page="{{{whichPage}}}"></script>
+
+    
+

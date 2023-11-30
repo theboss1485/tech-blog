@@ -1,0 +1,25 @@
+{{!-- This handlebars partial generates the create, update, and delete form for creating, updating, and deleting
+blog posts and comments. --}}
+<section id="create-update-delete-post" class="background d-flex align-items-center flex-column col-9 custom-height">
+    <section class="col-10 m-3 px-0 post-border rounded ">
+        <section class="heading-button-background d-flex justify-content-between align-items-center px-3 py-1">
+            <h2>{{{cudFormTitle}}}</h2>
+        </section>
+        <section class="background d-flex align-items-center flex-column">
+            {{#if (equals type "Blog Post")}}
+                <label for="post-title" class="d-block ml-2 medium-text">Title:</label>
+                <input type="text" id="post-title" class="col-9 d-block ml-2 heading-button-background medium-text" value="{{{elementToBeEdited.title}}}">
+            {{/if}}
+            <label for="content"class="d-block mt-2 ml-2 medium-text">Content:</label>
+            <textarea type="text" rows="4" id="content" class="col-9 d-block mb-4 ml-2 heading-button-background medium-text textarea-adjustments">{{{elementToBeEdited.content}}}</textarea>
+            {{#if newElement}}
+                <button id="create-button" data-type="{{{type}}}" class="col-9 ml-2 mt-2 heading-button-background medium-text">Create New {{{type}}}</button>
+            {{/if}}
+            {{#unless newElement}}
+                <button id="update-button" class="col-9 ml-2 mt-2 heading-button-background medium-text" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Update {{{type}}}</button>
+                <button id="delete-button" class="col-9 ml-2 mt-2 heading-button-background medium-text" data-type="{{{type}}}" data-edit-element-id="{{{editElementId}}}" class="col-9 ml-2 mt-2">Delete {{{type}}}</button>
+            {{/unless}} 
+            <p id="error-message" class="text-center text-danger mt-3 medium-text">{{{error}}}</p>
+        </section>
+    </section>
+    <script src="/javascript/create-update-delete.js" defer></script>
