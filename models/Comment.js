@@ -25,7 +25,7 @@ Comment.init(
             allowNull: false,
             references: {
 
-                model: 'users',
+                model: 'user',
                 key: 'id'
             }
         },
@@ -35,7 +35,7 @@ Comment.init(
             allowNull: false,
             references: {
 
-                model: 'blog_posts',
+                model: 'blog_post',
                 key: 'id'
             }
         }
@@ -50,7 +50,7 @@ Comment.init(
         },
         freezeTableName: false,
         underscored: true,
-        modelName: 'Comment',
+        modelName: 'comment',
     }
 );
 

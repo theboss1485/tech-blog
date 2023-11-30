@@ -30,7 +30,7 @@ BlogPost.init(
             allowNull: false,
             references: {
 
-                model: 'Users',
+                model: 'user',
                 key: 'id'
             }
         }
@@ -45,7 +45,7 @@ BlogPost.init(
         },
         freezeTableName: false,
         underscored: true,
-        modelName: 'BlogPost',
+        modelName: 'blog_post',
     }
 );
 
