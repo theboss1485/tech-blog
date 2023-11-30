@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seeds": "node seeds/index.js"
+    "seeds": "node seeds/index.js",
+    "heroku-postbuild": "npm run seeds"
   },
   "author": "Gabriel Morrow",
   "license": "MIT",
