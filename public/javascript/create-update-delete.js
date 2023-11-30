@@ -88,7 +88,7 @@ async function createElement(elementType){
 
         if(elementType === "comment"){
 
-            document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&cudComment=true&newElement=true&error=invalidCommentSubmission`;
+            document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=true&newElement=true&error=invalidCommentSubmission`;
 
         } if(elementType === "blog post"){
 
@@ -130,8 +130,8 @@ async function updateElement(event, elementType){
 
         if (elementType === "comment"){
 
-            document.location.href =`/single-blog-post-and-comments?id=${blogPost.dataset.databasePostId}&
-                                    cudComment=true&newElement=false&editCommentId=${event.target.dataset.editElementId}&error=invalidCommentSubmission`;
+            document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&` +
+            `cudComment=true&newElement=false&editCommentId=${event.target.dataset.editElementId}&error=invalidCommentSubmission`;
         
         } else if (elementType === "blog post"){
 

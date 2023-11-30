@@ -13,7 +13,7 @@ let createPostButton = document.getElementById("new-post-button");
 let individualPosts = postsSection.children;
 
 
-for(let counter = 0; counter < individualPosts.length - 1; counter++){
+for(let counter = 0; counter < individualPosts.length; counter++){
 
     if(individualPosts[counter].tagName !== "button"){
 

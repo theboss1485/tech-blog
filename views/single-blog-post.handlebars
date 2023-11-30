@@ -2,22 +2,25 @@
 calls the appropriate partial if a comment needs to be updated or deleted.--}}
 <section id="single-post-container" class="background d-flex align-items-center flex-column">
     <section id="single-blog-post" class="col-11 m-3 px-0 post-border rounded" data-database-post-id="{{{blogPost.id}}}" data-user-id="{{{blogPost.user_id}}}">
-        <section class="d-flex justify-content-between align-items-center px-3 py-1 background post-title-background">
+        <section class="d-flex justify-content-between align-items-center px-3 py-1 background heading-button-background">
             <h2>{{{blogPost.title}}}</h2>
-            <p class="my-0 mr-2 small-text">Created by <b>{{{blogPost.user.username}}}</b> on {{{formatDate blogPost.createdAt}}}</p>
+            <p class="my-0 mr-2 medium-text">Created by <b>{{{blogPost.user.username}}}</b> on {{{formatDate blogPost.createdAt}}}</p>
         </section>
-            <p class="ml-3 mt-2 small-text">{{{blogPost.content}}}</p>
+            <p class="ml-3 mt-2 medium-text">{{{blogPost.content}}}</p>
     </section>
 </section>
-{{> comment}}
+{{#unless displayCudForm}}
+    {{> comment}}
+{{/unless}}
 <section class="d-flex align-items-center justify-content-around">
     {{#if loggedIn }}
         {{#unless displayCudForm}}
             <button id="new-comment-button" class="comment-button">Make a Comment!</button>
         {{/unless}}
     {{/if}}
+    {{#if displayCudForm}}
+        {{> create-update-delete}}
+    {{/if}}
 </section>
-{{#if displayCudForm}}
-    {{> create-update-delete}}
-{{/if}}
+
 

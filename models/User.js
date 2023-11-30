@@ -1,3 +1,4 @@
+/* This file contains the User model for the database.  */
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -30,7 +31,7 @@ User.init(
     {
         sequelize,
         timestamps: false,
-        freezeTableName: true,
+        freezeTableName: false,
         underscored: true,
         modelName: 'user'
     }

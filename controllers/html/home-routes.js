@@ -174,7 +174,7 @@ router.get('/dashboard', baseAuthenticateWhetherLoggedIn, async (req, res) => {
         if(req.query.error === "invalidPostSubmission"){
 
             error = `The title and content of a post must not be left blank. A post title can only contain the special characters '!', ':', '?', and '-'
-                     and can't start with those characters or end with ':' or '-'.  Try again'`
+                     and can't start with those characters or end with ':' or '-'.  Try again !!!`
         }
 
         let blogPostData = await BlogPost.findAll(

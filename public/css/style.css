@@ -26,7 +26,7 @@ CSS here. */
     font-size: 1.5em;
 }
 
-.post-title-background {
+.heading-button-background {
 
     background: linear-gradient(to bottom, #0095ff, #009dff 50%, #00aeff);
 }
@@ -48,7 +48,7 @@ CSS here. */
     filter: brightness(0.8);
 }
 
-.small-text {
+.medium-text {
 
     font-size: 1.25em;
 }
@@ -57,4 +57,17 @@ CSS here. */
 
     color: darkred;
     cursor:pointer;
+}
+
+.textarea-adjustments {
+
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+}
+
+.custom-height {
+
+    height: 10em;
 }

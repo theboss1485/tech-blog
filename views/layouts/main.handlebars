@@ -32,18 +32,19 @@
                     </nav>
                 </section>
             </section>
-            
             {{#if loggedInUser}}
-                <section id="welcome-bar" class="small-text">
+                <section id="welcome-bar" class="medium-text">
                     <p id="welcome-line" class="d-block" data-user-id="{{{loggedInUserId}}}">Welcome, <b>{{{loggedInUser}}}</b></p>
+                </section>
+            {{/if}}
+            {{#if invalidRedirectionMessage}}
+                <section class="d-flex col-12 justify-content-around mt-3">
+                    <p id="error-message" class="text-center text-danger medium-text">{{{invalidRedirectionMessage}}}</p>
                 </section>
             {{/if}}
         </section>
         <main>
             {{{body}}}
         </main>
-        <section class="d-flex col-12 justify-content-between">
-            <p id="error-message" class="text-center text-danger">{{{invalidRedirectionMessage}}}</p>
-        </section>
     </body>
 </html>

@@ -1,3 +1,5 @@
+/* This file contains the BlogPost model for the database.  The blog_posts table has
+a foreign key that references the users table.*/
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -28,7 +30,7 @@ BlogPost.init(
             allowNull: false,
             references: {
 
-                model: 'User',
+                model: 'Users',
                 key: 'id'
             }
         }

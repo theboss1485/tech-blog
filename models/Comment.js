@@ -1,3 +1,5 @@
+/* This file contains the Comment model for the database.  The comments table has two foreign keys, 
+one that references the blog_posts table and one that references the users table.*/
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -23,7 +25,7 @@ Comment.init(
             allowNull: false,
             references: {
 
-                model: 'user',
+                model: 'users',
                 key: 'id'
             }
         },

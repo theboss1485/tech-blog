@@ -2,11 +2,11 @@
 <section id="comments-section" class="background d-flex align-items-center flex-column">
     {{#each comments as |comment|}}
         <section id="{{{generateUuid}}}" class="col-9 m-3 px-0 post-border rounded" data-database-comment-id="{{{comment.id}}}">
-            <section class="post-title-background d-flex justify-content-around">
-                <p class="my-0 mr-2 py-1 small-text">Comment by <b>{{{user.username}}}</b> on {{{formatDate createdAt}}}</p>
+            <section class="heading-button-background d-flex justify-content-around">
+                <p class="my-0 mr-2 py-1 medium-text">Comment by <b>{{{user.username}}}</b> on {{{formatDate createdAt}}}</p>
                 
             </section>
-            <p class="ml-3 mt-2 small-text">{{{comment.content}}}</p>
+            <p class="ml-3 mt-2 medium-text">{{{comment.content}}}</p>
             {{#if (equals user_id ../loggedInUserId)}}
                 <section class="d-flex justify-content-around">
                     <button id="edit-delete-comment-button-{{{count @index}}}" class="comment-button mb-2" data-content={{{comment.id}}}>Edit or Delete!</button>
@@ -16,13 +16,8 @@
     {{/each}}
 
     <section class="d-flex align-items-center justify-content-around">
-        {{!-- {{#if loggedIn}}
-            {{#if newCommentButton}}
-                <button id="new-comment-button" class="bg-secondary">+ New Comment</button>
-            {{/if}}
-        {{/if}} --}}
         {{#unless loggedIn}}
-            <p class="small-text"> You must <a href="/login?blogPostId={{{blogPost.id}}}"><b>log in</b></a> before adding a comment!!</p>
+            <p class="medium-text"> You must <a href="/login?blogPostId={{{blogPost.id}}}"><b>log in</b></a> before adding a comment!!</p>
         {{/unless}}
     </section>
 </section>

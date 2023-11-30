@@ -112,9 +112,12 @@ router.post('/login', async (req, res) =>{
         let validUser = undefined;
         let validPassword = undefined;
 
-        validUser = await userData.get({plain: true});
+        if(userData){
 
-        if(validUser !== undefined){
+            validUser = await userData.get({plain: true});
+        }
+
+        if(validUser){
 
             validPassword = await bcrypt.compare(req.body.password, validUser.password)
         }
