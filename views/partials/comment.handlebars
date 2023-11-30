@@ -4,7 +4,6 @@
         <section id="{{{generateUuid}}}" class="col-9 m-3 px-0 post-border rounded" data-database-comment-id="{{{comment.id}}}">
             <section class="heading-button-background d-flex justify-content-around">
                 <p class="my-0 mr-2 py-1 medium-text">Comment by <b>{{{user.username}}}</b> on {{{formatDate createdAt}}}</p>
-                
             </section>
             <p class="ml-3 mt-2 medium-text">{{{comment.content}}}</p>
             {{#if (equals user_id ../loggedInUserId)}}

@@ -22,6 +22,8 @@ async function signUp(event){
     let enteredUsername = document.getElementById("username").value;
     let enteredPassword = document.getElementById("password").value;
 
+    if(enteredUsername.trim() && enteredPassword.trim()){
+
         let request = {
 
             method: "POST",
@@ -38,7 +40,12 @@ async function signUp(event){
 
         if(response.url.slice(-4) === 'true' && response.redirected === true){
 
-        window.location.replace('/signup?taken=true');
+            document.location.href = '/signup?taken=true';
+        }
+
+    } else {
+
+        document.location.href = '/signup?valid=false';
     }
 }
 

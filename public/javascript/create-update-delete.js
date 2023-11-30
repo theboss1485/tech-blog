@@ -67,15 +67,17 @@ async function createElement(elementType){
 
         try {
 
-            await fetch(requestUrl, {
+            let response = await fetch(requestUrl, {
 
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: requestBody
         
             });
+
+            console.log("response", response);
             
-            handleRedirection(elementType);
+            handleRedirection(response, elementType);
         
         } catch(error){
 
@@ -109,7 +111,7 @@ async function updateElement(event, elementType){
         
         try {
 
-            await fetch(`${requestUrl}${id}`, {
+            let response = await fetch(`${requestUrl}${id}`, {
 
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
@@ -117,7 +119,7 @@ async function updateElement(event, elementType){
         
             });
 
-            handleRedirection(elementType);
+            handleRedirection(response, elementType);
         
         } catch(error){
 
@@ -149,13 +151,13 @@ async function deleteElement(event, elementType){
     
     try {
 
-        await fetch(`${requestUrl}${id}`, {
+        let response = await fetch(`${requestUrl}${id}`, {
 
             method: "DELETE",
             headers: {"Content-Type": "application/json"},
         });
 
-        handleRedirection(elementType);
+        handleRedirection(response, elementType);
     
     } catch(error){
 
@@ -201,16 +203,24 @@ function generateBody(elementType){
 }
 
 /* This function handles redirection if a fetch request is valid so that the code to handle redirection
-doesn't need to repeated three times. */
-function handleRedirection(elementType){
+doesn't need to repeated three times. If the url ends in "login" the first if block redirects the user.
+I did this because I was having trouble getting the redirection to work by only using res.redirect.*/
+function handleRedirection(response, elementType){
 
-    if(elementType === "blog post"){
+    if(response.url.slice(-5) === "login"){
 
-        document.location.href =`/dashboard`
+        document.location.href = "/login";
     
-    } else if(elementType === "comment"){
+    } else {
 
-        document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
+        if(elementType === "blog post"){
+
+            document.location.href =`/dashboard`
+        
+        } else if(elementType === "comment"){
+    
+            document.location.href =`/single-blog-post-and-comments?id=${singleBlogPost.dataset.databasePostId}&cudComment=false`;
+        }
     }
 }
 

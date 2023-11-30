@@ -71,9 +71,7 @@ router.post('/', async (req, res) =>{
     }
 });
 
-/* I copied this code from the solved mini project of Module 14.  I really don't know any
-way to do this other than changing the variable names.  This route logs the 
-user out and calls a method that destroys the session.*/
+// This route logs the user out and calls a method that destroys the session.
 router.get('/logout', async (req, res) => {
 
     res.set('Cache-Control', 'no-store');
@@ -85,9 +83,9 @@ router.get('/logout', async (req, res) => {
             await sessionDestroyWithPromise(req);
             res.redirect(301, '../../login');
         
-        } catch {
+        } catch (error){
 
-            res.status(500).json(error);
+            res.status(500).end();
         }
     }
 });
@@ -122,7 +120,7 @@ router.post('/login', async (req, res) =>{
             validPassword = await bcrypt.compare(req.body.password, validUser.password)
         }
 
-        if (validPassword !== undefined){
+        if (validPassword){
 
             req.session.user_id = validUser.id
             req.session.logged_in = true;

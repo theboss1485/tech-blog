@@ -1,7 +1,8 @@
 const dayjs = require('dayjs');
 
 // The expert learning assistant chatbot told me how to use the UUID package.
-const {v4: uuidv4} = require('uuid')
+const {v4: uuidv4} = require('uuid');
+const { update } = require('../models/User');
 
 module.exports = {
 

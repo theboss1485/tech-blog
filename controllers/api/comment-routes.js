@@ -1,102 +1,81 @@
 const router = require('express').Router();
 const {Comment} = require('../../models');
+const {baseAuthenticateWhetherLoggedIn} = require('../../utils/authentication.js')
 
 // This POST route creates a new comment.
-router.post('/', async (req, res) => {
+router.post('/', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
-    if (req.session.logged_in){
+    try {
 
-        try {
-
-            let comment = await Comment.create(
-            
-                {
-                    content: req.body.content,
-                    user_id: req.body.user_id,
-                    blog_post_id: req.body.blog_post_id
-                }
-            )
-    
-        res.status(200).json(comment);
+        let comment = await Comment.create(
         
-        } catch (error) {
+            {
+                content: req.body.content,
+                user_id: req.body.user_id,
+                blog_post_id: req.body.blog_post_id
+            }
+        )
+
+    res.status(200).json(comment);
     
-            console.log(error);
-            res.status(500).json(error);
-        }
+    console.log("outside");
+    } catch (error) {
 
-    } else {
-
-        res.status(301).redirect('../../login');
+        console.log(error);
+        res.status(500).json(error);
     }
-    
 });
 
 // This PUT route updates a comment by its ID.
-router.put('/:id', async (req, res) => {
+router.put('/:id', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
-    if (req.session.logged_in){
+    try {
 
-        try {
-
-            let update = await Comment.update(
-            
-                {
-                    content: req.body.content
-                },
-                {
-                    where: {
+        let update = await Comment.update(
         
-                        id: req.params.id,
-                    }
+            {
+                content: req.body.content
+            },
+            {
+                where: {
+    
+                    id: req.params.id,
                 }
-            )
-    
-            res.status(200).json(update);
-    
-        } catch(error){
-    
-            console.log(error);
-            res.status(500).json(error);
-        }
+            }
+        )
 
-    } else {
+        res.status(200).json(update);
 
-        res.status(301).redirect('../../login');
+    } catch(error){
+
+        console.log(error);
+        res.status(500).json(error);
     }
 });
 
 
 //This DELETE route deletes a comment by its ID.
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
-    if(req.session.logged_in){
+    try {
 
-        try {
-
-            let deletion = await Comment.destroy(
-                
-                {
-                    where: {
+        let deletion = await Comment.destroy(
             
-                        id: req.params.id
-                    }
+            {
+                where: {
+        
+                    id: req.params.id
                 }
-            )
+            }
+        )
 
-            res.status(200).json(deletion);
+        res.status(200).json(deletion);
 
-            } catch(error) {
+        } catch(error) {
 
-            console.log(error);
-            res.status(500).json(error);
-        }
-    
-    } else {
-
-        res.status(301).redirect('../../login');
+        console.log(error);
+        res.status(500).json(error);
     }
-
 });
 
 module.exports = router;

@@ -78,6 +78,11 @@ router.get('/signup', (req, res) => {
         invalidCredentials = "This username is already taken.  Please try again!"
     }
 
+    if (req.query.valid ==="false"){
+
+        invalidCredentials = "The username and password must both be entered.  Please try again!!"
+    }
+
     try{
 
         res.render('login-signup', {
