@@ -12,29 +12,31 @@
         <script src="/javascript/main.js" defer></script>
         <script src="/javascript/logout.js" defer></script>
     </head>
-    <body class="height-100">
-        <section id="header-section" class="col-12 bg-secondary pb-4">
-            <section id="nav-section-container" class="d-flex col-12 justify-content-between">
-                <section id="nav-section">
+    <body class="height-100 background">
+        <section id="header-section" class="col-12 d-flex align-items-center flex-column pb-4">
+            <section id="title-section" class="mt-5 m-2 py-1 px-2 bg-info rounded fit-content d-block">
+                <h1>{{{pageTitle}}}</h1>
+            </section>
+            <section id="nav-section-container" class="fit-content justify-content-between">
+                
+                <section id="nav-section" class="d-block">
                     <nav class="navbar navbar-expand col-3 justify-content-between">
-                        <a href="/" id="home-link">Home</a>
-                        <a href="/dashboard?cudPost=false" id="dashboard-link">Dashboard</a>
+                        <a href="/" id="home-link" class="px-5 nav-text">Home</a>
+                        <a href="/dashboard?cudPost=false" id="dashboard-link" class="nav-text">Dashboard</a>
                         {{#if loggedInUser}}
-                            <a href="/api/users/logout" id="login-logout-link">Logout</a>
+                            <a href="/api/users/logout" class="px-5 nav-text" id="login-logout-link">Logout</a>
                         {{else}}
-                            <a href="/login" id="login-logout-link">Login</a>
+                            <a href="/login" class="px-5 nav-text" id="login-logout-link">Login</a>
                         {{/if}}
                     </nav>
                 </section>
-                {{#if loggedInUser}}
-                    <section id="welcome-bar">
-                    <p id="welcome-line" data-user-id="{{{loggedInUserId}}}">Welcome, {{{loggedInUser}}}</p>
-                    </section>
-                {{/if}}
             </section>
-            <section id="title-section" class="m-2 ml-4 bg-info rounded-3 col-2">
-                <h1>{{{pageTitle}}}</h1>
-            </section>
+            
+            {{#if loggedInUser}}
+                <section id="welcome-bar" class="small-text">
+                    <p id="welcome-line" class="d-block" data-user-id="{{{loggedInUserId}}}">Welcome, <b>{{{loggedInUser}}}</b></p>
+                </section>
+            {{/if}}
         </section>
         <main>
             {{{body}}}
