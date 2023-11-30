@@ -80,55 +80,58 @@ router.put('/:id', async (req, res) => {
     
 });
 
-// This DELETE route deletes a blog post by its ID.
-// router.delete('/:id', async (req, res) => {
+/*This DELETE route deletes a blog post by its ID.  The reason I am finding the blog post before deleting it is to
+circumvent the bug in sequelize discussed here: https://github.com/sequelize/sequelize/issues/8444*/
+router.delete('/:id', async (req, res) => {
 
-//     if(req.session.logged_in){
-//         try {
+    if(req.session.logged_in){
 
-//             let deletion = await BlogPost.destroy(
-                
-//                 {
-//                     where: {
-            
-//                         id: req.params.id
-//                     }
-//                 }
-//             )
+        try {
 
-//             res.status(200).json(deletion);
+            let blogPost = await BlogPost.findOne({
+
+                where: {
+
+                  id: req.params.id,
+
+                },
+            });
+
+            let deletion = await blogPost.destroy();
+
+            res.status(200).json(deletion);
     
-//         } catch(error) {
+        } catch(error) {
 
-//             console.log(error);
-//             res.status(500).json(error);
-//         }
-    
-//     } else {
-
-//         res.status(301).redirect('../../login')
-//     }
-// });
-
-router.delete('/:id', (req, res) => {
-
-    BlogPost.destroy({
-
-        where: {
-
-            id: req.params.id
+            console.log(error);
+            res.status(500).json(error);
         }
     
-        }).then((deletion) => {
+    } else {
 
-        res.status(200).json(deletion);
-    
-    }).catch((error) => {
-
-        console.log(error);
-        res.status(400).json(error);
-    });
+        res.status(301).redirect('../../login')
+    }
 });
+
+// router.delete('/:id', (req, res) => {
+
+//     BlogPost.destroy({
+
+//         where: {
+
+//             id: req.params.id
+//         }
+    
+//         }).then((deletion) => {
+
+//         res.status(200).json(deletion);
+    
+//     }).catch((error) => {
+
+//         console.log(error);
+//         res.status(400).json(error);
+//     });
+// });
 
 
 
