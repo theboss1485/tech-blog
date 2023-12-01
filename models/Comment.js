@@ -48,7 +48,7 @@ Comment.init(
             createdAt: true,
             updatedAt: false
         },
-        freezeTableName: false,
+        freezeTableName: true,
         underscored: true,
         modelName: 'comment',
     }
