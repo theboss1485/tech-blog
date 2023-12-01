@@ -14,10 +14,6 @@ let userDataWithHashedPasswords = hashUserPasswords(userData);
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
 
-  User.destroy({where: {}});
-  BlogPost.destroy({where: {}});
-  Comment.destroy({where: {}});
-
   await User.bulkCreate(userDataWithHashedPasswords, {
     individualHooks: true,
     returning: true,
