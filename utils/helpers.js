@@ -1,8 +1,13 @@
 const dayjs = require('dayjs');
 
+var utc = require('dayjs/plugin/utc');
+var timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 // The expert learning assistant chatbot told me how to use the UUID package.
 const {v4: uuidv4} = require('uuid');
-const { update } = require('../models/User');
 
 module.exports = {
 
@@ -23,7 +28,7 @@ module.exports = {
     /* This handlebars helper function formats a date to be MM/DD/YYYY. */
     formatDate: (dateToBeFormatted) => {
 
-        let formattedDate = dayjs(dateToBeFormatted).format('MM/DD/YYYY');
+        let formattedDate = dayjs(dateToBeFormatted).tz('America/New_York').format('MM/DD/YYYY');
         return formattedDate;
     },
 

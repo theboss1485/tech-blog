@@ -24,7 +24,7 @@ const sess = {
     rolling: true,
     cookie: {
         
-        maxAge: 5000
+        maxAge: 1800000
     },
 
     resave: false,

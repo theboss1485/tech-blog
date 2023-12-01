@@ -237,10 +237,10 @@ function performValidation(elementType){
 
         let trimmedTitle = postTitle.value.trim();
 
-        let passingRegex = titleRegex.test(postTitle.value); 
+        let passingRegex = titleRegex.test(trimmedTitle.value); 
 
 
-        if((trimmedTitle === "") || (passingRegex === false) || (trimmedContent === "")){
+        if((passingRegex === false) || (trimmedContent === "")){
 
             return false
         }

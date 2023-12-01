@@ -14,7 +14,7 @@ This application has been deployed to Heroku, so you can access it with the link
 
 ## Usage
 
-To access the application, you can use the following link: []()
+To access the application, you can use the following link: [https://glacial-reaches-96718-f00f706badc7.herokuapp.com/](https://glacial-reaches-96718-f00f706badc7.herokuapp.com/)
 
 Here is a screenshot of the tech blog: ![A screenshot of the tech blog](/assets/images/tech-blog-screenshot.JPG)
 
