@@ -22,7 +22,10 @@ async function signUp(event){
     let enteredUsername = document.getElementById("username").value;
     let enteredPassword = document.getElementById("password").value;
 
-    if(enteredUsername.trim() && enteredPassword.trim()){
+    let alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    let validUsername =  alphanumericRegex.test(enteredUsername);
+
+    if(validUsername && enteredPassword.trim()){
 
         let request = {
 

@@ -37,9 +37,13 @@ router.post('/', async (req, res) =>{
             }
         });
 
+        console.log("duplicate user", duplicateUser);
+
         if(!duplicateUser){
 
             let hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+            console.log("hashed password", hashedPassword)
 
             let validUser = await User.create({
 
