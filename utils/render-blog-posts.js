@@ -26,7 +26,7 @@ function renderBlogPosts(blogPosts, req, res, pageTitle, whichPage, error = ""){
 
     let invalidRedirectionMessage = false
 
-    console.log("req.query.error", req.query.error);
+    
 
     /* If the user attempts to edit the URL and change the query parameters there, the system 
     displays an error message. */
@@ -39,7 +39,7 @@ function renderBlogPosts(blogPosts, req, res, pageTitle, whichPage, error = ""){
         invalidRedirectionMessage = "";
     }
 
-    console.log("invalid redirection message", invalidRedirectionMessage);
+    
 
     res.render("blog-posts", {
         blogPosts,

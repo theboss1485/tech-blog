@@ -74,8 +74,6 @@ async function createElement(elementType){
                 body: requestBody
         
             });
-
-            console.log("response", response);
             
             handleRedirection(response, elementType);
         

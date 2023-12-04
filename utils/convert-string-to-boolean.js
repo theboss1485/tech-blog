@@ -7,7 +7,7 @@ function convertStringToBoolean(stringInQuestion){
 
         let parsedString = JSON.parse(stringInQuestion);
 
-        console.log("parsed string", parsedString);
+        
 
         return parsedString;
     
