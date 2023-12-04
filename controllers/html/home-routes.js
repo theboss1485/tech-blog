@@ -80,7 +80,7 @@ router.get('/signup', (req, res) => {
 
     if (req.query.valid ==="false"){
 
-        invalidCredentials = "The username and password must both be entered.  Please try again!!"
+        invalidCredentials = "The username and password must both be entered, and the username can only contain letters and numbers. Please try again!!"
     }
 
     try{
