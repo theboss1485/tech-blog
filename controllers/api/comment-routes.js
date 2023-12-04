@@ -18,7 +18,6 @@ router.post('/', baseAuthenticateWhetherLoggedIn, async (req, res) => {
 
     res.status(200).json(comment);
     
-    console.log("outside");
     } catch (error) {
 
         console.log(error);
