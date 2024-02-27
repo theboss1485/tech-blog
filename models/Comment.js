@@ -9,7 +9,7 @@ Comment.init(
     {
         id: {
 
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
@@ -21,7 +21,7 @@ Comment.init(
         },
         user_id: {
 
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             allowNull: false,
             references: {
 
@@ -31,7 +31,7 @@ Comment.init(
         },
         blog_post_id: {
 
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             allowNull: false,
             references: {
 
