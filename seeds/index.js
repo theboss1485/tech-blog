@@ -19,6 +19,9 @@ const seedDatabase = async () => {
     returning: true,
   });
 
+  let userData = await User.findAll();
+  console.log("user data", userData)
+
   console.log("Users seeded!");
 
   await BlogPost.bulkCreate(blogPostData, {
