@@ -8,8 +8,12 @@ let sequelize
 if (process.env.JAWSDB_URL) {
 
     sequelize = new Sequelize(process.env.JAWSDB_URL);
+    
+} else if (process.env.COCKROACHDB_URL){
 
-} else {
+    sequelize = new Sequelize(process.env.COCKROACHDB_URL);
+
+}  else {
 
     sequelize = new Sequelize(
 
