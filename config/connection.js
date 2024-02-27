@@ -2,16 +2,19 @@
 // This connection allows the server-side javaScript to connect to the database.
 const Sequelize = require('sequelize');
 require('dotenv').config();
+const pg = require('pg');
 
 let sequelize
 
 if (process.env.JAWSDB_URL) {
 
     sequelize = new Sequelize(process.env.JAWSDB_URL);
-    
+
 } else if (process.env.COCKROACHDB_URL){
 
-    sequelize = new Sequelize(process.env.COCKROACHDB_URL);
+    sequelize = new Sequelize(process.env.COCKROACHDB_URL, {
+        dialectModule: pg
+    });
 
 }  else {
 
