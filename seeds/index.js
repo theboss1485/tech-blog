@@ -12,33 +12,64 @@ const bcrypt = require('bcrypt');
 let userDataWithHashedPasswords = hashUserPasswords(userData);
 
 const seedDatabase = async () => {
-  await sequelize.sync({ force: true });
 
-  await User.bulkCreate(userDataWithHashedPasswords, {
-    individualHooks: true,
-    returning: true,
-  });
+    let blogPosts = [];
+    let comments = [];
+    await sequelize.drop();
+    await sequelize.sync({ force: true });
 
-  let userData = await User.findAll();
-  console.log("user data", userData)
+    let users = await User.bulkCreate(userDataWithHashedPasswords, {
 
-  console.log("Users seeded!");
+        individualHooks: true,
+        returning: true,
+    });
 
-  await BlogPost.bulkCreate(blogPostData, {
-    individualHooks: true,
-    returning: true,
-  });
+    let userData = await User.findAll();
+    console.log("user data", userData)
 
-  console.log("Blog Posts seeded!");
+    console.log("Users seeded!");
 
-  await Comment.bulkCreate(commentData, {
-    individualHooks: true,
-    returning: true,
-  });
+    console.log("users", users)
 
-  console.log("Comments seeded!");
+    for (const blogPost of blogPostData){
 
-  process.exit(0);
+        let randomUserIndex = Math.floor(Math.random() * users.length);
+        console.log("randomUserIndex", randomUserIndex);
+        let blogPostUserId = users[randomUserIndex].id;
+        users.splice(randomUserIndex, 1);
+
+        console.log("BlogPostUserId", blogPostUserId);
+
+        let seededBlogPost = await BlogPost.create({
+
+            ...blogPost,
+            user_id: blogPostUserId
+        });
+
+        blogPosts.push(seededBlogPost)
+    }
+
+    console.log("Blog Posts seeded!");
+
+    for (const comment of commentData){
+
+        let randomCommentBlogPostIndex = Math.floor(Math.random() * blogPosts.length);
+        let commentId= blogPosts[randomCommentBlogPostIndex].id;
+        blogPosts.splice(randomCommentBlogPostIndex, 1);
+
+        let seededComment = await Comment.create({
+
+            ...comment,
+            user_id: commentId,
+            blog_post_id: [commentId]
+        })
+
+        comments.push(seededComment)
+    }
+
+    console.log("Comments seeded!");
+
+    process.exit(0);
 };
 
 try{
