@@ -24,6 +24,8 @@ const seedDatabase = async () => {
         returning: true,
     });
 
+    let usersCopy = [...users];
+
     let userData = await User.findAll();
     console.log("user data", userData)
 
@@ -53,15 +55,18 @@ const seedDatabase = async () => {
 
     for (const comment of commentData){
 
-        let randomCommentBlogPostIndex = Math.floor(Math.random() * blogPosts.length);
-        let commentId= blogPosts[randomCommentBlogPostIndex].id;
-        blogPosts.splice(randomCommentBlogPostIndex, 1);
+        let randomBlogPostIndex = Math.floor(Math.random() * blogPosts.length);
+        let randomUserIndex = Math.floor(Math.random() * usersCopy.length);
+        let blogPostCommentId = blogPosts[randomBlogPostIndex].id;
+        let userCommentId = usersCopy[randomUserIndex].id;
+        blogPosts.splice(randomBlogPostIndex, 1);
+        usersCopy.splice(randomUserIndex, 1);
 
         let seededComment = await Comment.create({
 
             ...comment,
-            user_id: commentId,
-            blog_post_id: [commentId]
+            user_id: userCommentId,
+            blog_post_id: [blogPostCommentId]
         })
 
         comments.push(seededComment)
