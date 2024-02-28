@@ -132,7 +132,7 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
                 where: {
 
-                    id: parseInt(req.query.id, 10)
+                    id: req.query.id
                 }
             }
         );
@@ -161,7 +161,7 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
                 where: {
 
-                    blog_post_id: parseInt(req.query.id, 10)
+                    blog_post_id: req.query.id
                 }
             }
         );
