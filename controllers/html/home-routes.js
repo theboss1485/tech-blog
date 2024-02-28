@@ -129,12 +129,14 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
                 where: {
 
-                    id: req.query.id
+                    id: parseInt(req.query.id, 10)
                 }
             }
         );
 
         let blogPost = blogPostData.get({plain: true});
+
+        console.log("blogPost", blogPost);
 
         let commentData = await Comment.findAll(
             
@@ -152,12 +154,14 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
                 where: {
 
-                    blog_post_id: req.query.id
+                    blog_post_id: parseInt(req.query.id, 10)
                 }
             }
         );
 
         let comments = commentData.map((comment) => comment.get({ plain: true }));
+
+        console.log("comments", comments)
 
         renderSinglePostAndComments(comments, blogPost, req, res, error);
 
