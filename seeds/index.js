@@ -66,7 +66,7 @@ const seedDatabase = async () => {
 
             ...comment,
             user_id: userCommentId,
-            blog_post_id: [blogPostCommentId]
+            blog_post_id: blogPostCommentId
         })
 
         comments.push(seededComment)
