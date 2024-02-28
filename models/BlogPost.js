@@ -49,4 +49,11 @@ BlogPost.init(
     }
 );
 
+BlogPost.beforeCreate((blogPost, options) => {
+
+    // Convert the string ID to an integer
+    blogPost.id = parseInt(blogPost.id, 10);
+    blogPost.user_id = parseInt(blogPost.user_id, 10);
+});
+
 module.exports = BlogPost;
