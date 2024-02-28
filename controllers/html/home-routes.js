@@ -118,6 +118,9 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
 
     try{
 
+        let blogPostDataAll = await BlogPost.findAll()
+        console.log("blogPostDataAll", blogPostDataAll);
+
         let blogPostData = await BlogPost.findOne(
             
             {
@@ -133,6 +136,10 @@ router.get('/single-blog-post-and-comments', loggedInAuthenticationBeforeCud, as
                 }
             }
         );
+
+
+
+
 
         let blogPost = blogPostData.get({plain: true});
 
