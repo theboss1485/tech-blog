@@ -9,7 +9,7 @@ BlogPost.init(
     {
         id: {
 
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
@@ -26,7 +26,7 @@ BlogPost.init(
         },
         user_id: {
 
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
 
@@ -48,12 +48,5 @@ BlogPost.init(
         modelName: 'blog_post',
     }
 );
-
-BlogPost.beforeCreate((blogPost, options) => {
-
-    // Convert the string ID to an integer
-    blogPost.id = parseInt(blogPost.id, 10);
-    blogPost.user_id = parseInt(blogPost.user_id, 10);
-});
 
 module.exports = BlogPost;

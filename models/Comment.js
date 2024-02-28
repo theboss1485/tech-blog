@@ -9,7 +9,7 @@ Comment.init(
     {
         id: {
 
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
@@ -21,7 +21,7 @@ Comment.init(
         },
         user_id: {
 
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
 
@@ -31,7 +31,7 @@ Comment.init(
         },
         blog_post_id: {
 
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
 
@@ -39,7 +39,6 @@ Comment.init(
                 key: 'id'
             }
         }
-
     },
     {
         sequelize,
@@ -53,13 +52,5 @@ Comment.init(
         modelName: 'comment',
     }
 );
-
-Comment.beforeCreate((comment, options) => {
-
-    // Convert the string ID to an integer
-    comment.id = parseInt(comment.id, 10);
-    comment.blog_post_id = parseInt(comment.blog_post_id, 10);
-    comment.user_id = parseInt(comment.user_id, 10);
-});
 
 module.exports = Comment;
